@@ -5,7 +5,7 @@ public class MemberController {
 	public static void main(String[] args) {
 
 		
-
+		System.out.println("하이파이브");
 		System.out.println("브렌치 테에에스트");
 		System.out.println("dj branch");
 
