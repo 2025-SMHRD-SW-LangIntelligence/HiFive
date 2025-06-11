@@ -8,7 +8,12 @@ public class MemberController {
 		System.out.println("정광원");
 		System.out.println("고서연");
 		System.out.println("임태영");
+
+		System.out.println("gw branch");
+
+
 		System.out.println("dj branch");
 		
+
 	}
 } 
