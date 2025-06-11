@@ -12,9 +12,9 @@ public class MemberController {
 		System.out.println("gw branch");
 
 		System.out.println("브렌치 테스트합니다 123456");
+		System.out.println("13264984");
 
-
-
+		
 
 		System.out.println("dj branch");
 		
