@@ -11,6 +11,9 @@ public class MemberController {
 
 		System.out.println("누가 다 밀어버렸어");
 		System.out.println("김동진");
+		
+		String merge = "가나다";
+		System.out.println(merge);
 
 	}
 } 
