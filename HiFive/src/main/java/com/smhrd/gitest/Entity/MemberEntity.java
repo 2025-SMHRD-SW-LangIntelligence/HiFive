@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Entity
 @Data
-//@Table(name="테이블 만들어 질 시 입력할 것")
+@Table(name="campus_25W_LI_p2_1")
 public class MemberEntity {
 	
 	//pk 값이 필수 
