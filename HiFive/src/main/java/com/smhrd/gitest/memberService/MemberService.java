@@ -26,13 +26,13 @@ public class MemberService {
 
 	// 아이디 중복체크 기능
 	public boolean check(String email) {
-		return memberRepository.existsByid(email);
+		return memberRepository.existsByEmail(email);
 	}
 
 	// 로그인 기능
 	public MemberEntity login(String email, String pw) {
 
-		return memberRepository.findAllByIdAndPw(email, pw);
+		return memberRepository.findAllByEmailAndPw(email, pw);
 
 	}
 	}

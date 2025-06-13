@@ -8,7 +8,10 @@ import com.smhrd.gitest.Entity.MemberEntity;
 public interface MemberRepository extends JpaRepository<MemberEntity, Long>{
 
 	
-	boolean existsByid(String email);
+	boolean existsByEmail(String email);
 	//로그인 기능
-		MemberEntity findAllByIdAndPw(String email, String pw);
+		MemberEntity findAllByEmailAndPw(String email, String pw);
+		
+	//닉네임 중복 확인
+		boolean existsByNickname(String nickname);
 }
