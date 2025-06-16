@@ -16,10 +16,10 @@ public class StoreDto {
     // Entity → DTO 변환
     public static StoreDto fromEntity(StoreEntity entity) {
         StoreDto dto = new StoreDto();
-        dto.setStoreId(entity.getStore_id());
-        dto.setStoreName(entity.getStore_name());
-        dto.setStoreLocation(entity.getStore_location());
-        dto.setStoreOwner(entity.getStore_owner());
+        dto.setStoreId(entity.getStoreId());
+        dto.setStoreName(entity.getStoreName());
+        dto.setStoreLocation(entity.getStoreLocation());
+        dto.setStoreOwner(entity.getStoreOwner());
         return dto;
     }
 }

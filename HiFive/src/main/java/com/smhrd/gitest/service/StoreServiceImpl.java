@@ -32,6 +32,6 @@ public class StoreServiceImpl implements StoreService {
 	    // (예시) 상위 5개 술집만 가져오는 로직
 	    @Override
 	    public List<StoreEntity> getTopPicks() {
-	        return storeRepository.findAll().stream().limit(5).toList();
+	        return storeRepository.findTop5ByOrderByStoreIdAsc();
 	    }
 	}

@@ -17,15 +17,15 @@ public class StoreEntity {
 	    @Id //pk 값
 	    @GeneratedValue(strategy = GenerationType.IDENTITY) 
 	    //숫자 자동 증가 MySQL AUTO_INCREMENT
-	    private Long store_id;
+	    private Long storeId;
 
 	    @Column(nullable = false) // not null 설정
-	    private String store_name;
+	    private String storeName;
 
 	    @Column(nullable = false)
-	    private String store_location;
+	    private String storeLocation;
 
 	    @Column(nullable = false)
-	    private String store_owner;
+	    private String storeOwner;
 	}
 

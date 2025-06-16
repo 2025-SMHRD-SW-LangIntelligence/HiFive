@@ -22,7 +22,9 @@ public class MemberEntity {
 		@Column(nullable = false, unique = true)		
 		private String email;
 		
+		@Column(nullable = false, unique = true)
 		private String pw;
+		
 		private String nickname;
 		private Integer age;
 		private String gender;
