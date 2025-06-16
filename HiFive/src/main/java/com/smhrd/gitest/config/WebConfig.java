@@ -16,7 +16,9 @@ public class WebConfig {
          .authorizeHttpRequests(auth -> auth
              .requestMatchers(
                  "/css/**", "/js/**", "/images/**",
-                 "/login", "/register", "/error"
+                 "/login", "/register", "/error",
+                 "/", "/css/**", "/js/**", "/images/**"
+                 
              ).permitAll()
              .anyRequest().authenticated()
          )

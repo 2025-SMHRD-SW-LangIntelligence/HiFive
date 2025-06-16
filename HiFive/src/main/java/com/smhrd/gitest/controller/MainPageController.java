@@ -15,8 +15,8 @@ public class MainPageController {
     public MainPageController(StoreService storeService) {
         this.storeService = storeService;
     }
-
-    @GetMapping("/main")
+    // 시작할때 메인페이지로 안내
+    @GetMapping("/")
     public String showMainPage(Model model) {
         model.addAttribute("topPicks", storeService.getTopPicks());
         return "main";
