@@ -1,82 +1,94 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>한잔하주(酒) — 메인</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>한잔하주(酒) — 메인</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet">
-  
-  <style>
-    body {
-      padding-top: 70px;
-    }
-    .navbar-brand {
-      font-weight: bold;
-      color: #f8c471 !important;
-    }
-    .card {
-      margin-bottom: 1.5rem;
-    }
-  </style>
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<style>
+body {
+	padding-top: 70px;
+}
+
+.navbar-brand {
+	font-weight: bold;
+	color: #f8c471 !important;
+}
+
+.card {
+	margin-bottom: 1.5rem;
+}
+</style>
 </head>
 <body>
-  <!-- navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" th:href="@{/}">한잔하주(酒)</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navMenu">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/review/new}">리뷰 작성</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/logout}">로그아웃</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+	<!-- navbar -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+		<div class="container">
+			<a class="navbar-brand" th:href="@{/}">한잔하주(酒)</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navMenu"
+				aria-controls="navMenu" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navMenu">
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/review/new}">리뷰 작성</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/logout}">로그아웃</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 
-  <!-- main content -->
-  <div class="container">
-    <div class="text-center mb-4">
-      <h2 th:text="${#authentication.name} + '님, 반갑습니다!'">사용자님, 반갑습니다!</h2>
-      <p>오늘의 기분에 맞는 추천 술집을 만나보세요.</p>
-    </div>
+	<!-- main content -->
+	<!-- ✅ 로그인 상태일 때만 환영 메시지 출력 -->
+	<div th:if="${#authorization.expression('isAuthenticated()')}">
+		<p th:text="${#authentication.name} + '님, 반갑습니다!'"></p>
+		<p>오늘의 기분에 맞는 추천 술집을 만나보세요.</p>
+		<a th:href="@{/logout}">로그아웃</a>
+	</div>
 
-    <div class="row">
-      <!-- 추천 술집 카드 반복 -->
-      <div class="col-md-4" th:each="store : ${topPicks}">
-        <div class="card h-100">
-          <img th:src="@{${store.imageUrl}}" class="card-img-top" alt="가게 이미지">
-          <div class="card-body">
-            <h5 class="card-title" th:text="${store.name}">가게명</h5>
-            <p class="card-text" th:text="${store.category}">카테고리</p>
-            <p class="card-text">
-              <small class="text-muted" th:text="${store.distance} + 'km'">0.5km</small>
-            </p>
-          </div>
-          <div class="card-footer text-center">
-            <a th:href="@{/store/{id}(id=${store.id})}" class="btn btn-outline-primary btn-sm">
-              상세보기
-            </a>
-          </div>
-        </div>
-      </div>
-      <!-- /추천 술집 카드 반복 -->
-    </div>
-  </div>
+	
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- 비로그인 상태 -->
+	<div th:if="${#authorization.expression('isAnonymous()')}">
+		<p>
+			환영합니다. 먼저 <a th:href="@{/login}">로그인</a> 해주세요!
+		</p>
+	</div>
+
+
+	<div class="row">
+		<!-- 추천 술집 카드 반복 -->
+		<div class="col-md-4" th:each="store : ${topPicks}">
+			<div class="card h-100">
+				<img th:src="@{${store.imageUrl}}" class="card-img-top" alt="가게 이미지">
+				<div class="card-body">
+					<h5 class="card-title" th:text="${store.name}">가게명</h5>
+					<p class="card-text" th:text="${store.category}">카테고리</p>
+					<p class="card-text">
+						<small class="text-muted" th:text="${store.distance} + 'km'">0.5km</small>
+					</p>
+				</div>
+				<div class="card-footer text-center">
+					<a th:href="@{/store/{id}(id=${store.id})}"
+						class="btn btn-outline-primary btn-sm"> 상세보기 </a>
+				</div>
+			</div>
+		</div>
+		<!-- /추천 술집 카드 반복 -->
+	</div>
+	</div>
+
+	<!-- Bootstrap JS -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
