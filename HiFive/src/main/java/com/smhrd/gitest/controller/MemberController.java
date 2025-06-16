@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.smhrd.gitest.Entity.MemberEntity;
-import com.smhrd.gitest.memberService.MemberService;
+import com.smhrd.gitest.entity.MemberEntity;
+import com.smhrd.gitest.service.MemberService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -19,7 +19,7 @@ public class MemberController {
 	// 회원가입 기능
 		@PostMapping("/register.do")
 		public String register(@RequestParam String email, @RequestParam String pw, 
-				@RequestParam String nickname, @RequestParam int age ,@RequestParam String sex) {
+				@RequestParam String nickname, @RequestParam int age ,@RequestParam String gender) {
 			//1. 필요한거 ???
 			// --> id, pw, age, name
 			//2. DB 연결  --> Repository 연결, Entity 생성 --> Service
@@ -29,7 +29,7 @@ public class MemberController {
 			entity.setPw(pw);
 			entity.setNickname(nickname);
 			entity.setAge(age);
-			entity.setSex(sex);
+			entity.setGender(gender);
 			
 			String result =memberService.register(entity);
 			

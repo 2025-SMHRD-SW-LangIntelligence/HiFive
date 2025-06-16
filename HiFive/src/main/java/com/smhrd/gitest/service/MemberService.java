@@ -1,11 +1,10 @@
-package com.smhrd.gitest.memberService;
+package com.smhrd.gitest.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import com.smhrd.gitest.Entity.MemberEntity;
-import com.smhrd.gitest.memberRepository.MemberRepository;
+import com.smhrd.gitest.entity.MemberEntity;
+import com.smhrd.gitest.repository.MemberRepository;
 
 @Service
 public class MemberService {
