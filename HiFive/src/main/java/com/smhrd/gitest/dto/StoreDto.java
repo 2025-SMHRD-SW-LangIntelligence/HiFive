@@ -10,6 +10,7 @@ public class StoreDto {
     private String storeName;
     private String storeLocation;
     private String storeOwner;
+    private Boolean wishlisted;
 
     // 필요한 경우 추가 필드 (예: 거리, 감정 태그 등)
 
