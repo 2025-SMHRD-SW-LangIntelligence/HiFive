@@ -3,6 +3,7 @@ package com.smhrd.gitest.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.smhrd.gitest.dto.StoreDto;
 import com.smhrd.gitest.entity.StoreEntity;
 
 public interface StoreService {
@@ -20,6 +21,9 @@ public interface StoreService {
     
     // 상위 5개 술집만 가져오기
     List<StoreEntity> getTopPicks();
+    
+    // 태그 기반 추천 메소드
+    List<StoreDto> recommendStoresByTags(List<String>tagNames);
     
  // 필요에 따라 추가 기능 선언
     // List<StoreDto> findByEmotion(String emotion);
