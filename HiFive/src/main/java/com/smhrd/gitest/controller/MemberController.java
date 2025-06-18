@@ -1,86 +1,74 @@
 package com.smhrd.gitest.controller;
 
+import com.smhrd.gitest.entity.MemberEntity;
+import com.smhrd.gitest.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.smhrd.gitest.entity.MemberEntity;
-import com.smhrd.gitest.service.MemberService;
-
-import jakarta.servlet.http.HttpSession;
+import java.time.LocalDate; // LocalDate 사용을 위해 추가
+import org.springframework.format.annotation.DateTimeFormat; // 날짜 형식 변환을 위해 추가
 
 @Controller
 public class MemberController {
 
-    
-		
-	@Autowired
-	MemberService memberService;
+    @Autowired
+    MemberService memberService;
 
-   
-    
-	// 회원가입 기능
-		@PostMapping("/register")
-		public String register(@RequestParam String email, @RequestParam String pw, 
-				@RequestParam String nickname, @RequestParam int age ,
-				@RequestParam String gender,@RequestParam String birthdate) {
-			//1. 필요한거 ???
-			// --> id, pw, age, name
-			//2. DB 연결  --> Repository 연결, Entity 생성 --> Service
-			//3. Service 연결
-			MemberEntity entity = new MemberEntity();
-			entity.setEmail(email);
-			entity.setPw(pw);
-			entity.setNickname(nickname);
-			entity.setAge(age);
-			entity.setGender(gender);
-			entity.setBirthdate(birthdate);
-			
-			 String result = memberService.register(entity);
-			 
-			 if ("success".equals(result)) {
-			        return "redirect:/login";
-			    } else if ("duplicate".equals(result)) {
-			        return "redirect:/register?error=duplicate";
-			    }
-			    // 모든 경우를 대비한 디폴트 반환
-			    return "redirect:/register?error=fail";
-		}
-			
-			//로그인 로그아웃 구현
-			@PostMapping("/login")
-			public String login(@RequestParam String email, @RequestParam String pw, HttpSession session) {
-			    MemberEntity user = memberService.login(email, pw);
-			    if (user != null) {
-			        session.setAttribute("loginUser", user);
-			        return "redirect:/"; // 로그인 성공시 메인으로
-			    } else {
-			        return "redirect:/login?error";
-			    }
-			}
+    // 회원가입 폼을 보여주는 페이지
+    @GetMapping("/register")
+    public String registerPage() {
+        return "register"; // templates/register.html 렌더링
+    }
 
-			@GetMapping("/logout")
-			public String logout(HttpSession session) {
-			    session.invalidate();
-			    return "redirect:/login?logout";
-			
-			
+    // 회원가입 처리
+    @PostMapping("/register")
+    public String register(@RequestParam String email, @RequestParam String pw,
+                           @RequestParam String nickname, @RequestParam int age,
+                           @RequestParam String gender,
+                           @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthdate) { // ★ String -> LocalDate로 변경
+        MemberEntity entity = new MemberEntity();
+        entity.setEmail(email);
+        entity.setPw(pw);
+        entity.setNickname(nickname);
+        entity.setAge(age);
+        entity.setGender(gender);
+        entity.setBirthdate(birthdate); // ★ LocalDate 타입으로 저장
 
-								
-					
-			
-			
-			
-			
-		}
-		
-		
-		
-		
-		
-		
+        String result = memberService.register(entity);
 
-} 
+        if ("success".equals(result)) {
+            return "redirect:/login";
+        } else if ("duplicate".equals(result)) {
+            return "redirect:/register?error=duplicate";
+        }
+        return "redirect:/register?error=fail";
+    }
+
+    // 로그인 폼을 보여주는 페이지
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
+    }
+
+    // 로그인 처리
+    @PostMapping("/login")
+    public String login(@RequestParam String email, @RequestParam String pw, HttpSession session) {
+        MemberEntity user = memberService.login(email, pw);
+        if (user != null) {
+            session.setAttribute("loginUser", user);
+            return "redirect:/main";
+        } else {
+            return "redirect:/login?error";
+        }
+    }
+
+    // 로그아웃 처리
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/start";
+    }
+}
