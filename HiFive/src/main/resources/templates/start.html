@@ -1,12 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>한잔하주 시작하기</title>
-</head>
-<body>
-    <h1>한잔하주(酒)</h1>
-    <p>어떤 방식으로 이용하시겠어요?</p>
-    <a th:href="@{/main}" class="btn">비회원으로 둘러보기</a>
-    <a th:href="@{/login}" class="btn">회원으로 로그인</a>
-</body>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>한잔하주(酒) 시작화면</title>
+    <link rel="stylesheet" href="start.css" />
+  </head>
+  <body>
+    <div class="container">
+      <img
+        src="./images/한잔하주_logochar(흰색).png"
+        alt="와인 아이콘"
+        class="logo-img"
+      />
+      <div class="title">한잔하주(酒)</div>
+      <div class="subtitle">감정을 마시다, 분위기를 느끼다</div>
+
+      <div class="buttons">
+        <button class="btn btn-guest" onclick="guestLogin()">게스트</button>
+        <button class="btn btn-member" onclick="goToLogin()">회원</button>
+      </div>
+
+      <div class="signup" onclick="goToSignUp()">회원가입</div>
+    </div>
+
+    <script>
+      function goToLogin() {
+        window.location.href = "login.html";
+      }
+
+      function guestLogin() {
+        window.location.href = "maintest.html";
+      }
+
+      function goToSignUp() {
+        window.location.href = "signup3.html";
+      }
+    </script>
+  </body>
 </html>

@@ -1,0 +1,112 @@
+:root {
+  --bg-color: #1d1c2b;
+  --yellow: #ffd43b;
+  --gray: #3a3946;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  color: white;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+.logo-img {
+  width: 200px;
+  height: 200px;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 40px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px 0;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn:hover {
+  transform: scale(0.98);
+}
+
+.btn-guest {
+  background-color: var(--gray);
+  color: white;
+}
+
+.btn-member {
+  background-color: var(--yellow);
+  color: black;
+  font-weight: bold;
+}
+
+.signup {
+  font-size: 0.9rem;
+  color: #aaa;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.6rem;
+  }
+  .btn {
+    font-size: 0.95rem;
+    padding: 10px 0;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+  .container {
+    max-width: 500px;
+  }
+  .title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .container {
+    max-width: 600px;
+  }
+  .title {
+    font-size: 2.5rem;
+  }
+}
