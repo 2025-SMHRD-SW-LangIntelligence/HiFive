@@ -25,7 +25,8 @@ public class MemberController {
 	// 회원가입 기능
 		@PostMapping("/register")
 		public String register(@RequestParam String email, @RequestParam String pw, 
-				@RequestParam String nickname, @RequestParam int age ,@RequestParam String gender) {
+				@RequestParam String nickname, @RequestParam int age ,
+				@RequestParam String gender,@RequestParam String birthdate) {
 			//1. 필요한거 ???
 			// --> id, pw, age, name
 			//2. DB 연결  --> Repository 연결, Entity 생성 --> Service
@@ -36,6 +37,7 @@ public class MemberController {
 			entity.setNickname(nickname);
 			entity.setAge(age);
 			entity.setGender(gender);
+			entity.setBirthdate(birthdate);
 			
 			 String result = memberService.register(entity);
 			 
@@ -66,11 +68,7 @@ public class MemberController {
 			    return "redirect:/login?logout";
 			
 			
-//			if(result.equals("success")){
-//				return "redirect:/login";
-//			}else {
-//				return "redirect:/register";
-//			}
+
 								
 					
 			
