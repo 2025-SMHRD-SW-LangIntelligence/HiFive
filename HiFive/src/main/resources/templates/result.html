@@ -1,0 +1,23 @@
+<!-- result.html -->
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>한잔하酒 추천 결과</title>
+    <link rel="stylesheet" href="/css/result.css" />
+    <script src="/js/result.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="back-btn" onclick="goBack()">←</div>
+      <div style="font-size: 1.1rem">한잔하酒 추천</div>
+      <div class="mypage-btn" onclick="goToMyPage()">My Page</div>
+    </header>
+
+    <h1>추천된 술집 목록</h1>
+    <div class="filters" id="filters"></div>
+    <div id="store-list"></div>
+    <div class="loading" id="loading">불러오는 중...</div>
+  </body>
+</html>
