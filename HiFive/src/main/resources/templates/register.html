@@ -62,7 +62,8 @@
 
       input[type="email"],
       input[type="password"],
-      input[type="date"] {
+      input[type="date"],
+      input[type="text"] {
         padding: 14px;
         border-radius: 16px;
         border: none;
@@ -99,6 +100,37 @@
         text-decoration: underline;
         cursor: pointer;
       }
+      .gender-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* 라디오 버튼 숨기기 */
+.gender-group input[type="radio"] {
+  display: none;
+}
+
+/* 라벨을 버튼처럼 꾸미기 */
+.gender-option {
+  flex: 1;
+  padding: 14px;
+  border-radius: 16px;
+  background-color: var(--input-bg);
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* 선택된 항목에 스타일 적용 */
+.gender-group input[type="radio"]:checked + .gender-option {
+  border: 2px solid var(--button-color);
+  background-color: #4a4859;
+}
+      
     </style>
   </head>
 
@@ -134,6 +166,21 @@
           placeholder="Repeat Password *"
           required
         />
+        <input
+          type="text"
+          id="nickname"
+          name="nickname"
+          placeholder="Nickname *"
+          required
+        />
+        <div class="gender-group">
+  <input type="radio" id="male" name="gender" value="male" required />
+  <label for="male" class="gender-option">남성</label>
+
+  <input type="radio" id="female" name="gender" value="female" required />
+  <label for="female" class="gender-option">여성</label>
+</div>
+        
         <input
           type="date"
           id="birth"
