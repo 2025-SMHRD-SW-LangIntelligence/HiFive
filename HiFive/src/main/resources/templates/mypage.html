@@ -95,38 +95,42 @@
 </head>
 <body>
   <header>
+    <!-- ★★★ 뒤로가기 기능은 아래 script에서 직접 구현 ★★★ -->
     <div class="back-btn" onclick="goBack()">←</div>
     마이페이지
   </header>
 
+  <!-- ★★★ 컨트롤러에서 받은 user 객체 사용 ★★★ -->
   <div class="profile">
     <div class="profile-img"></div>
-    <div class="nickname">닉네임</div>
+    <div class="nickname" th:text="${user.nickname}">닉네임</div>
   </div>
 
   <div class="info-box">
     <div>
       <p>작성한 리뷰</p>
-      <strong id="review-count">0</strong>
+      <!-- ★★★ 실제 리뷰 리스트의 사이즈로 개수 표시 ★★★ -->
+      <strong id="review-count" th:text="${#lists.size(myReviews)}">0</strong>
     </div>
     <div>
       <p>찜한 장소</p>
-      <strong id="like-count">0</strong>
+      <!-- ★★★ 실제 찜 목록 리스트의 사이즈로 개수 표시 ★★★ -->
+      <strong id="like-count" th:text="${#lists.size(myWishlist)}">0</strong>
     </div>
   </div>
 
   <div class="menu-box">
-    <div class="menu" onclick="location.href='myreviews.html'">작성한 리뷰 보기 <span>›</span></div>
-    <div class="menu" onclick="location.href='mywishlist.html'">찜한 장소 <span>›</span></div>
+    <!-- ★★★ 컨트롤러 경로로 이동하도록 링크 수정 ★★★ -->
+    <div class="menu" th:onclick="|location.href='@{/myreviews}'|">작성한 리뷰 보기 <span>›</span></div>
+    <div class="menu" th:onclick="|location.href='@{/wishlist/mine}'|">찜한 장소 <span>›</span></div>
   </div>
 
+  <!-- ★★★ 필요한 JavaScript만 남기고 정리 ★★★ -->
   <script>
-  window.addEventListener("DOMContentLoaded", () => {
-    const likeCount = localStorage.getItem("likeCount") || 0;
-    document.getElementById("like-count").innerText = likeCount;
-  });
-</script>
-
-  <script src="/js/mypage.js"></script>
+    // 뒤로가기 기능
+    function goBack() {
+      history.back();
+    }
+  </script>
 </body>
 </html>
