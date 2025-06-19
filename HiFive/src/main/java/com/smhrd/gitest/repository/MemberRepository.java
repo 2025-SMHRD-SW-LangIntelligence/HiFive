@@ -1,5 +1,6 @@
 package com.smhrd.gitest.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,9 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long>{
 		boolean existsByNickname(String nickname);
 		
 		boolean existsByEmail(String email);
+		
+		 // 닉네임과 생년월일로 회원 찾기
+	    Optional<MemberEntity> findByNicknameAndBirthdate(String nickname, LocalDate birthdate);
 		
 	// 회원 등급별 조회
 		//List<MemberEntity> findAllByGrade(String grade);

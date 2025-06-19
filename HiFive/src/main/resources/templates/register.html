@@ -135,81 +135,81 @@
   </head>
 
   <body>
-    <div class="signup-container">
-      <img
-        th:src="@{/images/한잔하주_logochar(흰색).png}"
-        alt="와인 아이콘"
-        class="logo-img"
+  <div class="signup-container">
+    <img
+      th:src="@{/images/한잔하주_logochar(흰색).png}"
+      alt="와인 아이콘"
+      class="logo-img"
+    />
+    <div class="title">한잔하주(酒)</div>
+    <div class="subtitle">감정을 마시다, 분위기를 느끼다</div>
+
+    <!-- ★★★ 수정된 form 태그 ★★★ -->
+    <form th:action="@{/register}" method="post">
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Email *"
+        required
       />
-      <div class="title">한잔하주(酒)</div>
-      <div class="subtitle">감정을 마시다, 분위기를 느끼다</div>
-
-      <form onsubmit="handleSubmit(event)">
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Email *"
-          required
-        />
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password *"
-          required
-        />
-        <input
-          type="password"
-          id="repeat-password"
-          name="repeat-password"
-          placeholder="Repeat Password *"
-          required
-        />
-        <input
-          type="text"
-          id="nickname"
-          name="nickname"
-          placeholder="Nickname *"
-          required
-        />
-        <div class="gender-group">
-  <input type="radio" id="male" name="gender" value="male" required />
-  <label for="male" class="gender-option">남성</label>
-
-  <input type="radio" id="female" name="gender" value="female" required />
-  <label for="female" class="gender-option">여성</label>
-</div>
-        
-        <input
-          type="date"
-          id="birth"
-          name="birth"
-          placeholder="생년월일 *"
-          required
-        />
-        <button type="submit">가입하기</button>
-      </form>
-
-      <div class="back" th:onclick="|window.location.href='@{/start}'|">
-        시작화면으로 돌아가기
+      <input
+        type="password"
+        id="password"
+        name="pw"
+        placeholder="Password *"
+        required
+      />
+      <input
+        type="password"
+        id="repeat-password"
+        name="pwConfirm"
+        placeholder="Repeat Password *"
+        required
+      />
+      <input
+        type="text"
+        id="nickname"
+        name="nickname"
+        placeholder="Nickname *"
+        required
+      />
+      <div class="gender-group">
+        <!-- ★★★ value를 DB에 저장될 값(M/F 등)으로 수정 ★★★ -->
+        <input type="radio" id="male" name="gender" value="M" required />
+        <label for="male" class="gender-option">남성</label>
+        <input type="radio" id="female" name="gender" value="F" required />
+        <label for="female" class="gender-option">여성</label>
       </div>
+      
+      <input
+      type="date"
+        id="birth"
+        name="birthdate" 
+        placeholder="생년월일 *"
+        required
+      />
+        
+      
+
+      <!-- ★★★ 연령대(age) 선택 필드 추가 ★★★ -->
+      <select name="age" required style="padding: 14px; border-radius: 16px; border: none; font-size: 1rem; background-color: var(--input-bg); color: white;">
+          <option value="">연령대 선택 *</option>
+          <option value="10">10대</option>
+          <option value="20">20대</option>
+          <option value="30">30대</option>
+          <option value="40">40대</option>
+          <option value="50">50대 이상</option>
+      </select>
+      
+      <button type="submit">가입하기</button>
+    </form>
+
+    <div class="back" th:onclick="|window.location.href='@{/start}'|">
+      시작화면으로 돌아가기
     </div>
+  </div>
 
-    <script>
-      function handleSubmit(event) {
-        event.preventDefault();
-        const password = document.getElementById("password").value;
-        const repeatPassword = document.getElementById("repeat-password").value;
-
-        if (password !== repeatPassword) {
-          alert("비밀번호가 일치하지 않습니다.");
-          return;
-        }
-
-        alert("회원가입이 완료되었습니다!");
-        window.location.href = "/start";
-      }
-    </script>
-  </body>
+  <!-- ★★★ JavaScript 부분은 완전히 삭제합니다. ★★★ -->
+</body>
 </html>

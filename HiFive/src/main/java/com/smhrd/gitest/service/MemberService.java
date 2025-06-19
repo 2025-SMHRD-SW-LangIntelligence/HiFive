@@ -1,5 +1,6 @@
 package com.smhrd.gitest.service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,13 @@ public class MemberService {
             return "success"; // 저장 성공
         }
         return "fail"; // 저장 실패 등 모든 나머지 경우의 디폴트 반환
+        
     }
     	
+    public Optional<String> findEmailByNicknameAndBirthdate(String nickname, LocalDate birthdate) {
+    	return memberRepository.findByNicknameAndBirthdate(nickname, birthdate)
+    			.map(MemberEntity::getEmail); // 찾은 MemberEntity에서 email만 추출
+    }
        
     
 
