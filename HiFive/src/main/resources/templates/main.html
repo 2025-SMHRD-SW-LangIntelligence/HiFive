@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,24 +7,29 @@
     <link rel="stylesheet" href="/css/main.css" />
     <script src="/js/main.js" defer></script>
   </head>
-  <body>
-    <div class="container">
-      <div class="logo">
-        <img src="/images/logo.png" alt="로고" />
-      </div>
-      <h1>한잔하酒</h1>
-      <p class="subtitle">기분이나 상황에 맞는 술집을 매칭받으세요 :)</p>
+  <body th:with="loginUser=${session.loginUser}">
+  <div class="container">
+    <div class="logo">
+      <!-- Thymeleaf 경로로 수정 -->
+      <img th:src="@{/images/logo.png}" alt="로고" />
+    </div>
+    <h1>한잔하酒</h1>
+    <p class="subtitle">기분이나 상황에 맞는 술집을 매칭받으세요 :)</p>
 
+    <!-- ★★★ 백엔드 전송을 위한 form 태그로 전체를 감쌉니다 ★★★ -->
+    <form th:action="@{/recommend}" method="post">
+      
+      <!-- 지역 선택 (현재는 시각적 요소로만 두고, 기능 확장은 추후에 가능) -->
       <div class="section">
         <div class="section-title">시/도</div>
         <div class="tags" id="city">
           <div class="tag selected">광주광역시</div>
         </div>
       </div>
-
       <div class="section">
         <div class="section-title">구</div>
         <div class="tags" id="districts">
+          <!-- (JS로 동적 처리되므로 일단 그대로 둡니다) -->
           <div class="tag" data-dong="donggu">동구</div>
           <div class="tag" data-dong="seogu">서구</div>
           <div class="tag" data-dong="namgu">남구</div>
@@ -32,41 +37,53 @@
           <div class="tag" data-dong="gwangsan">광산구</div>
         </div>
       </div>
-
       <div class="section">
         <div class="section-title">동</div>
         <div class="tags" id="neighborhoods"></div>
       </div>
 
+      <!-- 상황 태그 선택 (input checkbox로 변경) -->
       <div class="section">
         <div class="section-title">상황</div>
         <div class="tags" id="situations">
-          <div class="tag"># 단체모임</div>
-          <div class="tag"># 생일</div>
-          <div class="tag"># 응원</div>
-          <div class="tag"># 데이트</div>
-          <div class="tag"># 결혼기념일</div>
-          <div class="tag"># 회식</div>
-          <div class="tag"># 혼술</div>
+          <input type="checkbox" name="tags" value="단체모임" id="sit1" class="tag-checkbox"><label for="sit1" class="tag"># 단체모임</label>
+          <input type="checkbox" name="tags" value="생일" id="sit2" class="tag-checkbox"><label for="sit2" class="tag"># 생일</label>
+          <input type="checkbox" name="tags" value="응원" id="sit3" class="tag-checkbox"><label for="sit3" class="tag"># 응원</label>
+          <input type="checkbox" name="tags" value="데이트" id="sit4" class="tag-checkbox"><label for="sit4" class="tag"># 데이트</label>
+          <input type="checkbox" name="tags" value="회식" id="sit5" class="tag-checkbox"><label for="sit5" class="tag"># 회식</label>
+          <input type="checkbox" name="tags" value="혼술" id="sit6" class="tag-checkbox"><label for="sit6" class="tag"># 혼술</label>
         </div>
       </div>
 
+      <!-- 감정 태그 선택 (input checkbox로 변경) -->
       <div class="section">
         <div class="section-title">감정</div>
         <div class="tags" id="emotions">
-          <div class="tag"># 기쁨</div>
-          <div class="tag"># 즐거움</div>
-          <div class="tag"># 설렘</div>
-          <div class="tag"># 로맨틱</div>
-          <div class="tag"># 외로운</div>
-          <div class="tag"># 위로</div>
-          <div class="tag"># 스트레스</div>
-          <div class="tag"># 분노</div>
-          <div class="tag"># 감성</div>
+          <input type="checkbox" name="tags" value="기쁨" id="emo1" class="tag-checkbox"><label for="emo1" class="tag"># 기쁨</label>
+          <input type="checkbox" name="tags" value="즐거움" id="emo2" class="tag-checkbox"><label for="emo2" class="tag"># 즐거움</label>
+          <input type="checkbox" name="tags" value="설렘" id="emo3" class="tag-checkbox"><label for="emo3" class="tag"># 설렘</label>
+          <input type="checkbox" name="tags" value="로맨틱" id="emo4" class="tag-checkbox"><label for="emo4" class="tag"># 로맨틱</label>
+          <input type="checkbox" name="tags" value="위로" id="emo5" class="tag-checkbox"><label for="emo5" class="tag"># 위로</label>
+          <input type="checkbox" name="tags" value="스트레스" id="emo6" class="tag-checkbox"><label for="emo6" class="tag"># 스트레스</label>
+          <input type="checkbox" name="tags" value="감성" id="emo7" class="tag-checkbox"><label for="emo7" class="tag"># 감성</label>
         </div>
       </div>
+      
+      <!-- ★★★ 버튼 타입을 submit으로 변경 ★★★ -->
+      <button type="submit" class="button">술집 찾기</button>
+    </form>
 
-      <button class="button">술집 찾기</button>
+    <!-- 로그인/로그아웃 버튼 (상단이나 하단 등 적절한 위치에 추가) -->
+    <div class="user-actions" style="position: absolute; top: 20px; right: 20px;">
+        <div th:if="${loginUser != null}">
+            <a th:href="@{/mypage}" style="color: white; margin-right: 15px;" th:text="|${loginUser.nickname}님|"></a>
+            <a th:href="@{/logout}" style="color: white;">로그아웃</a>
+        </div>
+        <div th:if="${loginUser == null}">
+            <a th:href="@{/login}" style="color: white;">로그인</a>
+        </div>
     </div>
-  </body>
+
+  </div>
+</body>
 </html>

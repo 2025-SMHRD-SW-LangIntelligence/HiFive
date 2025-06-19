@@ -101,3 +101,24 @@ p.subtitle {
 .button:hover {
   background-color: #e97f3b;
 }
+/* 1. 실제 체크박스는 화면에서 숨깁니다. */
+.tag-checkbox {
+  display: none;
+}
+
+/* 2. 체크박스와 연결된 라벨(태그)의 기본 스타일을 설정합니다. */
+.tag-checkbox + .tag {
+  /* 여기에 기존 .tag 스타일을 그대로 두거나 필요시 추가합니다. */
+  background-color: #e7e7e7;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* 3. (핵심) 체크박스가 선택되었을 때(checked), 
+      바로 다음에 오는(+) 라벨(.tag)의 스타일을 변경합니다. */
+.tag-checkbox:checked + .tag {
+  background-color: var(--tag-active); /* 선택 시 배경색 (검은색) */
+  color: var(--tag-active-text);      /* 선택 시 글자색 (흰색) */
+  font-weight: bold;                  /* 선택 시 글자 굵게 (선택 사항) */
+}

@@ -135,31 +135,4 @@ districtTags.forEach((tag) => {
   });
 });
 
-document.querySelector(".button").addEventListener("click", () => {
-  const selectedDistrict =
-    document.querySelector("#districts .tag.selected")?.innerText || "";
-  const selectedNeighborhoods = [
-    ...document.querySelectorAll("#neighborhoods .tag.selected"),
-  ].map((tag) => tag.innerText);
-  const selectedSituations = [
-    ...document.querySelectorAll("#situations .tag.selected"),
-  ].map((tag) => tag.innerText);
-  const selectedEmotions = [
-    ...document.querySelectorAll("#emotions .tag.selected"),
-  ].map((tag) => tag.innerText);
 
-  const selectedData = {
-    district: selectedDistrict,
-    neighborhoods: selectedNeighborhoods,
-    situations: selectedSituations,
-    emotions: selectedEmotions,
-  };
-
-  console.log("선택된 정보:", selectedData);
-
-  // localStorage 저장 예시
-  localStorage.setItem("selectedData", JSON.stringify(selectedData));
-
-  // 다음 추천 페이지로 이동 (예시)
-  location.href = "result.html";
-});

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>한잔하酒 추천 결과</title>
     <link rel="stylesheet" href="/css/result.css" />
-    <script src="/js/result.js" defer></script>
+    
   </head>
   <body>
     <header>
@@ -19,5 +19,31 @@
     <div class="filters" id="filters"></div>
     <div id="store-list"></div>
     <div class="loading" id="loading">불러오는 중...</div>
+    
+    <script th:inline="javascript">
+      // 뒤로가기 버튼 기능
+      function goBack() {
+        // history.back()은 브라우저의 '뒤로가기'와 동일하게 동작합니다.
+        // main.html에서 이 페이지로 왔으므로, main.html로 돌아갑니다.
+        history.back();
+      }
+
+      // 마이페이지 버튼 기능 (로그인 상태에 따라 다르게 동작)
+      function goToMyPage() {
+        /*<![CDATA[*/
+        // 세션에 로그인 정보가 있는지 확인 (Thymeleaf 변수 사용)
+        const loginUser = /*[[${session.loginUser}]]*/ null;
+        /*]]>*/
+
+        if (loginUser) {
+          // 로그인 상태이면 마이페이지로 이동
+          window.location.href = '/mypage';
+        } else {
+          // 비로그인 상태이면 로그인 페이지로 이동
+          alert('로그인이 필요한 서비스입니다.');
+          window.location.href = '/login';
+        }
+      }
+    </script>
   </body>
 </html>
