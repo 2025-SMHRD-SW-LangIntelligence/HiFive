@@ -49,4 +49,26 @@ public class MemberService {
         return null;
     }
     
+    public void updatePassword(String email, String newPassword) {
+        // 1. 이메일로 회원 정보 조회
+        Optional<MemberEntity> memberOpt = memberRepository.findByEmail(email);
+        
+        // 2. 회원이 존재하면 비밀번호 업데이트
+        if (memberOpt.isPresent()) {
+            MemberEntity member = memberOpt.get();
+            // ★★★ 현재는 평문 저장. 만약 암호화를 쓴다면 아래 코드로 변경 ★★★
+            // member.setPw(passwordEncoder.encode(newPassword));
+            member.setPw(newPassword);
+            memberRepository.save(member);
+        }
+        // 회원이 존재하지 않는 경우는 컨트롤러에서 이미 처리했으므로, 별도 처리는 생략 가능
+        
+        /**
+         * 이메일과 생년월일이 모두 일치하는 회원이 존재하는지 확인합니다.
+         */
+    }
+    public boolean checkAccountExists(String email, LocalDate birthdate) {
+    	return memberRepository.existsByEmailAndBirthdate(email, birthdate);
+    }
+    
 }

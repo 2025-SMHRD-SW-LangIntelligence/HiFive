@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>아이디 찾기</title>
+    <!-- 여기에 필요한 CSS를 연결할 수 있습니다. -->
+</head>
+<body>
+    <h2>아이디(이메일) 찾기</h2>
+    <p>가입 시 입력한 닉네임과 생년월일을 입력해주세요.</p>
+    
+    <!-- 아이디 찾기 정보를 제출하는 폼 -->
+    <form th:action="@{/find/id}" method="post">
+        <div>
+            <label for="nickname">닉네임:</label>
+            <input type="text" id="nickname" name="nickname" required>
+        </div>
+        <div>
+            <label for="birthdate">생년월일:</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+        </div>
+        <br>
+        <button type="submit">아이디 찾기</button>
+    </form>
+    <hr>
+    <a th:href="@{/find}">이전으로 돌아가기</a>
+</body>
+</html>

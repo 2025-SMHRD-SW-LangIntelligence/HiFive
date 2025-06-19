@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>아이디/비밀번호 찾기</title>
+</head>
+<body>
+    <h2>무엇을 찾으시겠어요?</h2>
+    <p>원하시는 항목을 선택해주세요.</p>
+    
+    <ul>
+        <li><a th:href="@{/find/id}">아이디(이메일) 찾기</a></li>
+        <li><a th:href="@{/find/pw}">비밀번호 재설정</a></li>
+    </ul>
+    <hr>
+    <a th:href="@{/login}">로그인 화면으로 돌아가기</a>
+</body>
+</html>

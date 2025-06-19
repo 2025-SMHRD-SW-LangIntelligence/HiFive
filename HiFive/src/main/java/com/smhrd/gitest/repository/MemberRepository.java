@@ -25,6 +25,8 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long>{
 		 // 닉네임과 생년월일로 회원 찾기
 	    Optional<MemberEntity> findByNicknameAndBirthdate(String nickname, LocalDate birthdate);
 		
-	// 회원 등급별 조회
-		//List<MemberEntity> findAllByGrade(String grade);
+	    /**
+	     * 이메일과 생년월일로 회원이 존재하는지 확인하는 쿼리 메소드
+	     */
+	    boolean existsByEmailAndBirthdate(String email, LocalDate birthdate);
 }	
