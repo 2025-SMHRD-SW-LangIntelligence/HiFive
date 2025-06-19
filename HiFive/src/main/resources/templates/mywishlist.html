@@ -10,7 +10,7 @@
 </head>
 <body>
   <header>
-    <div class="back-btn" onclick="goBack()">←</div>
+    <div class="back-btn" th:onclick="|location.href='@{/mypage}'|">←</div>
     찜한 장소
   </header>
   <h1>내가 찜한 술집</h1>
@@ -41,11 +41,6 @@
 
   <div class="loading" id="loading" style="display: none;">불러오는 중...</div>
 
-  <!-- ★★★ 필요한 JavaScript만 HTML 내부에 직접 작성 ★★★ -->
-  <script>
-    function goBack() {
-      history.back();
-    }
-  </script>
+  
 </body>
 </html>

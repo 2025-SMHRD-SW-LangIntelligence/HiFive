@@ -22,5 +22,5 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long>{
 		boolean existsByEmail(String email);
 		
 	// 회원 등급별 조회
-		List<MemberEntity> findAllByGrade(String grade);
+		//List<MemberEntity> findAllByGrade(String grade);
 }	

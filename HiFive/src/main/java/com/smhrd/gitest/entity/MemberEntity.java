@@ -31,5 +31,5 @@ public class MemberEntity {
 		private Integer age;
 		private String gender;
 		private LocalDate birthdate;
-		private String grade;
+		
 }
