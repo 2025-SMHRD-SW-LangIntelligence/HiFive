@@ -135,4 +135,18 @@ districtTags.forEach((tag) => {
   });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("form");
+  const submitBtn = document.getElementById("submit-btn");
+
+  form.addEventListener("submit", (e) => {
+    const selectedTags = document.querySelectorAll('input[name="tags"]:checked');
+    if (selectedTags.length === 0) {
+      e.preventDefault(); // 폼 전송 막기
+      alert("태그를 최소 하나 이상 선택해주세요!");
+    }
+  });
+});
+
+
 
