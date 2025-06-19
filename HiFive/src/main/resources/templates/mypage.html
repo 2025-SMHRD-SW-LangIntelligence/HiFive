@@ -91,12 +91,24 @@
     .menu:hover {
       background-color: #e2e2e2;
     }
+    
+    .logout-btn {
+  margin-left: auto;
+  font-size: 0.95rem;
+  color: #fff;
+  cursor: pointer;
+}
+.logout-btn:hover {
+  text-decoration: underline;
+}
+    
   </style>
 </head>
 <body>
   <header>
     <div class="back-btn" th:onclick="|location.href='@{/recommend}'|">←</div>
     마이페이지
+    <div class="logout-btn" onclick="logout()">로그아웃</div>
   </header>
 
   <div class="profile">
