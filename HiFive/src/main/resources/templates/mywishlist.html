@@ -1,23 +1,20 @@
+<!-- resources/templates/mywishlist.html -->
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<table>
-    <thead>
-        <tr>
-            <th>술집 ID</th>
-            <th>이메일</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="wish : ${wishList}">
-            <td th:text="${wish.store_id}"></td>
-            <td th:text="${wish.email}"></td>
-        </tr>
-    </tbody>
-</table>
-</body>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>찜한 장소</title>
+    <link rel="stylesheet" href="/css/wishlist.css" />
+    <script src="/js/wishlist.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="back-btn" onclick="goBack()">←</div>
+      찜한 장소
+    </header>
+    <h1>내가 찜한 술집</h1>
+    <div id="place-list"></div>
+    <div class="loading" id="loading">불러오는 중...</div>
+  </body>
 </html>
