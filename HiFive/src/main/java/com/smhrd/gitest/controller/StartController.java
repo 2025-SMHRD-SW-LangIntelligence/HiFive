@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class StartController {
-	@GetMapping("/")
+	@GetMapping("/start")
 	public String StartPage() {
 		return "start"; // templates/start.html
 	}
