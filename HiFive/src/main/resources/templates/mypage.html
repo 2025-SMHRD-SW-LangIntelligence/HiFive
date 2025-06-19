@@ -1,47 +1,132 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>마이페이지</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>마이페이지</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      background-color: #fff;
+      color: #111;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      background-color: #1a1826;
+      color: white;
+      padding: 16px 20px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .back-btn {
+      margin-right: 12px;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 30px 0 20px;
+    }
+
+    .profile-img {
+      width: 70px;
+      height: 70px;
+      background-color: #ccc;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .nickname {
+      font-weight: bold;
+    }
+
+    .info-box {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .info-box div {
+      background-color: #eee;
+      padding: 12px 24px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .info-box p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #444;
+    }
+
+    .info-box strong {
+      display: block;
+      font-size: 1.2rem;
+      margin-top: 4px;
+    }
+
+    .menu-box {
+      margin: 0 16px;
+    }
+
+    .menu {
+      background-color: #eee;
+      padding: 14px 20px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .menu:hover {
+      background-color: #e2e2e2;
+    }
+  </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>마이페이지</h2>
-        <div class="card mt-4 mb-3">
-            <div class="card-body">
-                <h5 class="card-title" th:text="${user.nickname} + ' 님, 환영합니다!'"></h5>
-                <p class="card-text"><strong>이메일:</strong> <span th:text="${user.email}"></span></p>
-                <p class="card-text"><strong>성별:</strong> <span th:text="${user.gender}"></span></p>
-                <p class="card-text"><strong>생년월일:</strong> <span th:text="${user.birthdate}"></span></p>
-                <p class="card-text"><strong>연령대:</strong> <span th:text="${user.age}"></span></p>
-                <!-- 필요에 따라 더 많은 정보 추가 가능 -->
-            </div>
-        </div>
-        <a th:href="@{/'"} class="btn btn-primary">메인으로</a>
-        <a th:href="@{/logout}" class="btn btn-secondary">로그아웃</a>
+  <header>
+    <div class="back-btn" onclick="goBack()">←</div>
+    마이페이지
+  </header>
+
+  <div class="profile">
+    <div class="profile-img"></div>
+    <div class="nickname">닉네임</div>
+  </div>
+
+  <div class="info-box">
+    <div>
+      <p>작성한 리뷰</p>
+      <strong id="review-count">0</strong>
     </div>
-    
-    <h4>내가 쓴 리뷰</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>리뷰 ID</th>
-            <th>술집</th>
-            <th>내용</th>
-            <th>이미지</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="review : ${myReviews}">
-            <td th:text="${review.review_id}"></td>
-            <td th:text="${review.store.store_name}"></td>
-            <td th:text="${review.content}"></td>
-            <td>
-                <img th:if="${review.image != null}" th:src="${review.image}" style="max-width:100px;">
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <div>
+      <p>찜한 장소</p>
+      <strong id="like-count">0</strong>
+    </div>
+  </div>
+
+  <div class="menu-box">
+    <div class="menu" onclick="location.href='reviews.html'">작성한 리뷰 보기 <span>›</span></div>
+    <div class="menu" onclick="location.href='wishlist.html'">찜한 장소 <span>›</span></div>
+  </div>
+
+  <script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const likeCount = localStorage.getItem("likeCount") || 0;
+    document.getElementById("like-count").innerText = likeCount;
+  });
+</script>
+
+  <script src="/js/mypage.js"></script>
 </body>
 </html>
