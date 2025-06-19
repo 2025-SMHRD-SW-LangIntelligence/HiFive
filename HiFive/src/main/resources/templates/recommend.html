@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>한잔하酒 추천 결과</title>
+    <!-- ★★★ CSS 경로를 Thymeleaf 문법으로 수정 ★★★ -->
+    <link rel="stylesheet" th:href="@{/css/result.css}" />
+    <!-- ★★★ 불필요한 result.js 링크는 삭제합니다. ★★★ -->
+</head>
+<body>
+    <header>
+        <!-- ★★★ 뒤로가기 버튼은 goBack() 함수를 그대로 호출합니다. ★★★ -->
+        <div class="back-btn" onclick="goBack()">←</div>
+        <div style="font-size: 1.1rem">한잔하酒 추천</div>
+        <!-- ★★★ 마이페이지 버튼도 그대로 유지합니다. ★★★ -->
+        <div class="mypage-btn" onclick="goToMyPage()">My Page</div>
+    </header>
+
+    <h1>추천된 술집 목록</h1>
+
+    <!-- ★★★ 사용자가 선택한 태그를 표시하는 부분 (컨트롤러에서 selectedTags를 받아야 함) ★★★ -->
+    <div class="filters" id="filters" th:if="${selectedTags != null}">
+        선택한 태그: <span th:text="${#strings.listJoin(selectedTags, ', #')}" style="font-weight: bold; color: #ff914d;"></span>
+    </div>
+
+    <!-- ★★★ 실제 추천 목록을 동적으로 표시하는 부분 ★★★ -->
+    <div id="store-list">
+        <!-- 결과가 있을 경우 -->
+        <div th:if="${!#lists.isEmpty(recommendedStores)}">
+            <div class="store-item" th:each="store : ${recommendedStores}">
+                <h5 th:text="${store.storeName}">술집 이름</h5>
+                <p th:text="${store.storeLocation}">술집 위치</p>
+                <!-- 상세 보기 링크 등 추가 가능 -->
+            </div>
+        </div>
+        <!-- 결과가 없을 경우 -->
+        <div th:if="${#lists.isEmpty(recommendedStores)}">
+            <p>아쉽게도, 해당 조건에 맞는 술집을 찾지 못했어요. 😢</p>
+        </div>
+    </div>
+
+    <div class="loading" id="loading" style="display: none;">불러오는 중...</div>
+    
+    <!-- ★★★ goBack() 함수만 수정하고, 나머지는 그대로 유지 ★★★ -->
+    <script th:inline="javascript">
+      // 1. 뒤로가기 버튼 기능: 이제 항상 메인 페이지로 이동합니다.
+      function goBack() {
+        window.location.href = /*[[@{/main}]]*/ '/main';
+      }
+
+      // 2. 마이페이지 버튼 기능: 기존 코드를 그대로 유지합니다.
+      function goToMyPage() {
+        /*<![CDATA[*/
+        const loginUser = /*[[${session.loginUser}]]*/ null;
+        /*]]>*/
+
+        if (loginUser) {
+          window.location.href = '/mypage';
+        } else {
+          alert('로그인이 필요한 서비스입니다.');
+          window.location.href = '/login';
+        }
+      }
+    </script>
+</body>
+</html>
