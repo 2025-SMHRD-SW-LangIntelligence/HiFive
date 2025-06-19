@@ -1,0 +1,103 @@
+@charset "UTF-8";
+:root {
+  --bg-color: #ffffff;
+  --tag-bg: #f0f0f0;
+  --tag-active: #222;
+  --tag-active-text: #fff;
+  --section-bg: #f9f9f9;
+  --text-color: #111;
+  --accent-color: #ff914d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  color: var(--text-color);
+  padding: 20px;
+  line-height: 1.4;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.logo {
+  text-align: center;
+  position: relative;
+  top: 20px;
+}
+
+.logo img {
+  width: 86px;
+  height: 97px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin: 10px 0 4px;
+}
+
+p.subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.section {
+  background-color: var(--section-bg);
+  padding: 14px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+}
+
+.section-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: var(--accent-color);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  background-color: #e7e7e7;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag.selected {
+  background-color: var(--tag-active);
+  color: var(--tag-active-text);
+}
+
+.button {
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  margin-top: 30px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background-color: #e97f3b;
+}
