@@ -134,7 +134,18 @@
     <div class="menu" th:onclick="|location.href='@{/myreviews}'|">작성한 리뷰 보기 <span>›</span></div>
     <div class="menu" th:onclick="|location.href='@{/wishlist/mine}'|">찜한 장소 <span>›</span></div>
   </div>
-
+	
+	
+	<!-- ★★★ 로그아웃 기능을 위한 스크립트 추가 ★★★ -->
+  <script>
+    function logout() {
+      // 사용자에게 정말 로그아웃할 것인지 한번 더 확인합니다.
+      if (confirm("정말 로그아웃 하시겠습니까?")) {
+        // "예"를 누르면 서버의 /logout 경로로 페이지를 이동시킵니다.
+        window.location.href = '/logout';
+      }
+    }
+  </script>
   
 </body>
 </html>
