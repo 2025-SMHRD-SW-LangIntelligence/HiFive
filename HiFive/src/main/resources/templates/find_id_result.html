@@ -8,19 +8,23 @@
 <body>
     <h2>아이디(이메일) 찾기 결과</h2>
     
-    <!-- 컨트롤러가 "foundEmail"을 모델에 담아 보냈을 경우 (성공) -->
+    <!-- 1. 이메일을 성공적으로 찾았을 경우 -->
     <div th:if="${foundEmail}">
         <p>회원님의 이메일 주소는 아래와 같습니다.</p>
         <p><strong th:text="${foundEmail}"></strong></p>
+        <hr>
+        <a th:href="@{/login}">로그인 하러 가기</a>
+        <a th:href="@{/find/pw}" style="margin-left: 10px;">비밀번호 재설정</a>
     </div>
 
-    <!-- 컨트롤러가 "errorMessage"를 모델에 담아 보냈을 경우 (실패) -->
+    <!-- 2. 정보를 찾지 못했을 경우 (컨트롤러에서 errorMessage를 보냈을 때) -->
     <div th:if="${errorMessage}">
         <p style="color: red;" th:text="${errorMessage}"></p>
+        <p>입력한 정보를 다시 확인해주세요.</p>
+        <hr>
+        <!-- ★★★ 뒤로가기 버튼 추가 ★★★ -->
+        <button type="button" onclick="history.back()">다시 시도하기 (뒤로가기)</button>
+        <a th:href="@{/register}" style="margin-left: 10px;">회원가입</a>
     </div>
-    
-    <hr>
-    <a th:href="@{/login}">로그인 하러 가기</a>
-    <a th:href="@{/find/pw}" style="margin-left: 10px;">비밀번호 재설정</a>
 </body>
 </html>

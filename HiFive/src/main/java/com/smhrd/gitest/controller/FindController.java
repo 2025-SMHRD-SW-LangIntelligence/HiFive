@@ -49,7 +49,7 @@ public class FindController {
     // 1. 비밀번호 찾기(이메일 입력) 폼을 보여주는 페이지
     @GetMapping("/find/pw")
     public String findPwForm() {
-        return "find_pw_form"; // templates/find_pw_form.html
+        return "find_password_form"; // templates/find_pw_form.html
     }
 
     // 2. 이메일 및 생년월일을 확인 후, 새 비밀번호 입력 폼으로 이동
