@@ -1,6 +1,7 @@
 package com.smhrd.gitest.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.smhrd.gitest.entity.MemberEntity;
 import com.smhrd.gitest.entity.ReviewEntity;
@@ -28,4 +29,9 @@ public interface ReviewService {
      * @return 해당 가게의 리뷰 목록
      */
     List<ReviewEntity> findReviewsByStoreId(Long storeId);
+    
+    Optional<ReviewEntity> findReviewById(Long reviewId);
+    ReviewEntity updateReview(Long reviewId, String content, String userEmail);
+    void deleteReview(Long reviewId, String userEmail);
+    
 }

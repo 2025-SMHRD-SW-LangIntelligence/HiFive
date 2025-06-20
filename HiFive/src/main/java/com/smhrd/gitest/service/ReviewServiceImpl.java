@@ -1,6 +1,7 @@
 package com.smhrd.gitest.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,36 @@ public class ReviewServiceImpl implements ReviewService{
 	    @Override
 	    public List<ReviewEntity> findReviewsByStoreId(Long storeId) {
 	        return reviewRepository.findAllByStore_StoreId(storeId);
+	    }
+	    @Override
+	    public Optional<ReviewEntity> findReviewById(Long reviewId) {
+	        return reviewRepository.findById(reviewId);
+	    }
+
+	    @Override
+	    public ReviewEntity updateReview(Long reviewId, String content, String userEmail) {
+	        ReviewEntity review = reviewRepository.findById(reviewId)
+	                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰입니다. id=" + reviewId));
+	        
+	        // 본인이 쓴 리뷰인지 다시 한번 확인 (보안 강화)
+	        if (!review.getMember().getEmail().equals(userEmail)) {
+	            throw new IllegalStateException("리뷰를 수정할 권한이 없습니다.");
+	        }
+
+	        review.setContent(content);
+	        return reviewRepository.save(review);
+	    }
+
+	    @Override
+	    public void deleteReview(Long reviewId, String userEmail) {
+	        ReviewEntity review = reviewRepository.findById(reviewId)
+	                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰입니다. id=" + reviewId));
+	        
+	        if (!review.getMember().getEmail().equals(userEmail)) {
+	            throw new IllegalStateException("리뷰를 삭제할 권한이 없습니다.");
+	        }
+
+	        reviewRepository.delete(review);
 	    }
 
 }
