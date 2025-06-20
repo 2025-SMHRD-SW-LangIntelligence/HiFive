@@ -25,6 +25,9 @@ public interface StoreService {
     // 태그 기반 추천 메소드
     List<StoreDto> recommendStoresByTags(List<String>tagNames);
     
+    // 점수 기반으로 추천 가게 목록을 가져오는 메소드
+    List<StoreDto> getTopRatedStores(int limit);
+    
  // 필요에 따라 추가 기능 선언
     // List<StoreDto> findByEmotion(String emotion);
 }

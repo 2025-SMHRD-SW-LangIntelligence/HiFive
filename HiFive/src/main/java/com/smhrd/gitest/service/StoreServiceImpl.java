@@ -1,11 +1,15 @@
 package com.smhrd.gitest.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.smhrd.gitest.dto.StoreDto;
 import com.smhrd.gitest.entity.StoreEntity;
+import com.smhrd.gitest.entity.StoreRecommendationScoreEntity;
 import com.smhrd.gitest.repository.MoodTagRepository;
+import com.smhrd.gitest.repository.StoreRecommendationScoreRepository;
 import com.smhrd.gitest.repository.StoreRepository;
 
 import java.util.List;
@@ -23,9 +27,14 @@ public class StoreServiceImpl implements StoreService {
 	
 	@Autowired
 	private MoodTagRepository moodTagRepository;
+	
+	@Autowired
+	private StoreRecommendationScoreRepository scoreRepository;
 
-	    public StoreServiceImpl(StoreRepository storeRepository) {
+	    public StoreServiceImpl(StoreRepository storeRepository, StoreRecommendationScoreRepository scoreRepository) {
 	        this.storeRepository = storeRepository;
+	        this.scoreRepository = scoreRepository;
+	        
 	    }
 
 	    // 전체 술집 목록 조회
@@ -71,6 +80,18 @@ public class StoreServiceImpl implements StoreService {
 	                .map(StoreDto::fromEntity)
 	                .collect(Collectors.toList());
 	    }
-	    
+	    @Override
+	    public List<StoreDto> getTopRatedStores(int limit) {
+	        // Pageable 객체를 사용하여 상위 limit 개수만큼만 가져오도록 설정
+	        Pageable pageable = PageRequest.of(0, limit);
+
+	        // 점수 높은 순으로 가게 점수 정보 조회
+	        List<StoreRecommendationScoreEntity> topScores = scoreRepository.findTopStoresByScore(pageable);
+
+	        // StoreRecommendationScoreEntity 리스트에서 StoreDto 리스트로 변환
+	        return topScores.stream()
+	                .map(scoreEntity -> StoreDto.fromEntity(scoreEntity.getStore()))
+	                .collect(Collectors.toList());
+	    }
 	    
 	}
