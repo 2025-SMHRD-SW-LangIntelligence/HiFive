@@ -20,13 +20,34 @@ public class StoreEntity {
 	    @Column(name="store_id")// DB 컬럼명은 store_id
 	    private Long storeId;	// 필드명은 camelCase로 변경
 
-	    @Column(name="store_name", nullable = false) // not null 설정
-	    private String storeName;
+	    @Column(name="shop_name", nullable = false) // not null 설정
+	    private String shopName;
 
-	    @Column(name="store_location" ,nullable = false)
-	    private String storeLocation;
+	    @Column(name="address" ,nullable = false)
+	    private String address;
 
-	    @Column(name="store_owner" ,nullable = false)
-	    private String storeOwner;
+	    @Column(name = "rating")
+	    private Double rating; // 평점은 소수점을 포함할 수 있으므로 Double
+
+	    @Column(name = "photo_url", length = 2083) // URL은 길 수 있으므로 길이 지정
+	    private String photoUrl;
+
+	    @Column(name = "all_keywords", columnDefinition = "TEXT")
+	    private String allKeywords; // 키워드는 길 수 있으므로 TEXT 타입 지정
+
+	    @Column(name = "mid_tag", columnDefinition = "TEXT")
+	    private String midTag;
+
+	    @Column(name = "clean_address")
+	    private String cleanAddress;
+
+	    @Column(name = "lat")
+	    private Double lat; // 위도
+
+	    @Column(name = "lng")
+	    private Double lng; // 경도
+	    
+	    // store_name, store_location, store_owner 필드는 이 클래스에서 완전히 삭제합니다.
+	
 	}
 
