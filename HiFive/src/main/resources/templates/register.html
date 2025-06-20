@@ -150,7 +150,7 @@
       <button type="submit">가입하기</button>
     </form>
 
-    <div class="back" th:onclick=\"|location.href='@{/start}'|\">시작화면으로 돌아가기</div>
+    <a th:href="@{/start}" class="back">시작화면으로 돌아가기</a>
   </div>
 
   <!-- thymeleaf 템플릿 안에서 javascript 사용할 경우 -->
