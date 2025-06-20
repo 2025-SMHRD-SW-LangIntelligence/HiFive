@@ -31,7 +31,7 @@ public class StoreController {
         
         // 1. 가게 정보 조회
         StoreDto storeDto = storeService.findStoreById(storeId)
-                .map(StoreDto::fromEntity)
+                .map(entity -> StoreDto.fromEntity(entity))
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 가게입니다. id=" + storeId));
         
         // 2. 로그인 상태 확인 및 찜 여부 설정
