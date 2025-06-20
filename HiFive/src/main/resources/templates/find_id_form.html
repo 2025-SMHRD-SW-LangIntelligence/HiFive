@@ -1,28 +1,142 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>아이디 찾기</title>
-    <!-- 여기에 필요한 CSS를 연결할 수 있습니다. -->
-</head>
-<body>
-    <h2>아이디(이메일) 찾기</h2>
-    <p>가입 시 입력한 닉네임과 생년월일을 입력해주세요.</p>
-    
-    <!-- 아이디 찾기 정보를 제출하는 폼 -->
-    <form th:action="@{/find/id}" method="post">
-        <div>
-            <label for="nickname">닉네임:</label>
-            <input type="text" id="nickname" name="nickname" required>
-        </div>
-        <div>
-            <label for="birthdate">생년월일:</label>
-            <input type="date" id="birthdate" name="birthdate" required>
-        </div>
-        <br>
-        <button type="submit">아이디 찾기</button>
-    </form>
-    <hr>
-    <a th:href="@{/find}">이전으로 돌아가기</a>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>이메일 찾기 - 한잔하주(酒)</title>
+    <style>
+      :root {
+        --bg-color: #1d1c2b;
+        --input-bg: #3a3946;
+        --placeholder: #aaa;
+        --button-color: #ff914d;
+        --button-hover: #ff7a26;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background-color: var(--bg-color);
+        font-family: "Pretendard", "Noto Sans KR", sans-serif;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 360px;
+        text-align: center;
+      }
+
+      .logo-img {
+        width: 160px;
+        height: 160px;
+        margin-bottom: 10px;
+      }
+
+      .title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 6px;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+        color: #ccc;
+        margin-bottom: 30px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      input {
+        padding: 14px;
+        border-radius: 16px;
+        border: none;
+        font-size: 1rem;
+        background-color: var(--input-bg);
+        color: white;
+      }
+
+      input::placeholder {
+        color: var(--placeholder);
+      }
+
+      button {
+        margin-top: 10px;
+        background-color: var(--button-color);
+        color: white;
+        padding: 14px;
+        font-size: 1rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      button:hover {
+        background-color: var(--button-hover);
+      }
+
+      .back {
+        margin-top: 15px;
+        font-size: 0.85rem;
+        color: #bbb;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img th:src="@{/images/한잔하주_logochar(흰색).png}" alt="로고" class="logo-img" />
+      <div class="title">이메일 찾기</div>
+      <div class="subtitle">가입 시 입력한 닉네임과 생년월일을 입력하세요</div>
+
+      <!-- 백엔드와 연동할 경우 -->
+      <form onsubmit="handleEmailFind(event)">
+        <input type="text" id="name" placeholder="닉네임 *" required />
+        <input type="date" id="birth" required />
+        <button type="submit">이메일 찾기</button>
+      </form>
+
+      <div class="back" th:onclick="|location.href='@{/login}'|">로그인으로 돌아가기</div>
+    </div>
+
+    <script>
+      function handleEmailFind(e) {
+        e.preventDefault();
+        const nickname = document.getElementById("name").value;
+        const birth = document.getElementById("birth").value;
+
+        fetch("/api/find-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nickname, birth }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              // 이메일 결과 페이지로 이동
+              window.location.href = `/email-verify?email=${encodeURIComponent(data.email)}`;
+            } else {
+              alert("입력하신 정보와 일치하는 이메일이 없습니다.");
+            }
+          })
+          .catch(() => {
+            alert("서버 요청 중 오류가 발생했습니다.");
+          });
+      }
+    </script>
+  </body>
 </html>
