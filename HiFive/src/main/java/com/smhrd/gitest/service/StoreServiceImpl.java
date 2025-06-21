@@ -1,10 +1,10 @@
 package com.smhrd.gitest.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smhrd.gitest.dto.StoreDto;
 import com.smhrd.gitest.entity.StoreEntity;
 import com.smhrd.gitest.repository.StoreRepository;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +17,11 @@ import java.util.stream.Collectors;
 public class StoreServiceImpl implements StoreService {
 
     private final StoreRepository storeRepository;
+    private final ObjectMapper objectMapper; // JSON 변환을 위해 추가
 
-    public StoreServiceImpl(StoreRepository storeRepository) {
+    public StoreServiceImpl(StoreRepository storeRepository, ObjectMapper objectMapper) {
         this.storeRepository = storeRepository;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -36,38 +38,30 @@ public class StoreServiceImpl implements StoreService {
                 .collect(Collectors.toList());
     }
 
-    // ★★★ (최종 추천 로직) ★★★
+    // ★★★ 최종 추천 로직 구현 ★★★
+    // ★★★ 최종 추천 로직 구현 ★★★
     @Override
     public List<StoreDto> recommendByFilters(List<String> categories, List<String> addressTags) {
         
-        List<StoreEntity> initialRecommendations;
+        // ★★★ JSON 변환 로직을 완전히 삭제합니다. ★★★
+        
+        // 1. Repository의 새로운 동적 쿼리를 직접 호출합니다.
+        List<Long> recommendedStoreIds = storeRepository.findRecommendedStoreIdsByFilters(categories, addressTags);
 
-        // 1. 카테고리(감정/상황) 기반으로 1차 추천 목록 생성
-        if (categories == null || categories.isEmpty()) {
-            // 선택된 카테고리가 없으면, 전체 가게를 대상으로 함
-            initialRecommendations = storeRepository.findAll();
-        } else {
-            // 카테고리 기반 추천 쿼리 실행
-            List<Long> storeIds = storeRepository.findRecommendedStoreIdsByCategories(categories);
-            initialRecommendations = storeRepository.findAllById(storeIds);
+        if (recommendedStoreIds.isEmpty()) {
+            return List.of();
         }
 
-        // 2. 주소 태그로 2차 필터링
-        List<StoreEntity> finalRecommendations;
-        if (addressTags == null || addressTags.isEmpty()) {
-            // 선택된 주소가 없으면 1차 추천 목록을 그대로 사용
-            finalRecommendations = initialRecommendations;
-        } else {
-            // 1차 추천 목록에서, 주소가 일치하는 가게만 필터링
-            finalRecommendations = initialRecommendations.stream()
-                .filter(store -> addressTags.stream()
-                                            .anyMatch(tag -> store.getAddress().contains(tag)))
-                .collect(Collectors.toList());
-        }
+        // 2. ID 목록으로 실제 가게 정보(Entity)를 조회합니다.
+        List<StoreEntity> recommendedStores = storeRepository.findAllById(recommendedStoreIds);
 
-        // 3. 최종 결과를 DTO로 변환하여 반환
-        // (만약 순서 보정이 필요하다면, 이전 답변의 Map을 사용한 순서 보정 로직을 여기에 추가)
-        return finalRecommendations.stream()
+        // 3. (중요) DB에서 조회된 순서(추천 점수 순)를 유지하며 DTO로 변환합니다.
+        Map<Long, StoreEntity> storeMap = recommendedStores.stream()
+                .collect(Collectors.toMap(StoreEntity::getStoreId, Function.identity()));
+
+        return recommendedStoreIds.stream()
+                .map(storeMap::get)
+                .filter(java.util.Objects::nonNull)
                 .map(StoreDto::fromEntity)
                 .collect(Collectors.toList());
     }

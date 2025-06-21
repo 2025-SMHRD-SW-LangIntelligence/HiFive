@@ -9,116 +9,43 @@
   --accent-color: #ff914d;
 }
 
-* {
-  box-sizing: border-box;
+* { box-sizing: border-box; }
+body { margin: 0; background-color: var(--bg-color); font-family: "Pretendard", "Noto Sans KR", sans-serif; color: var(--text-color); padding: 20px; line-height: 1.4; }
+.container { max-width: 480px; margin: 0 auto; }
+.logo { text-align: center; position: relative; top: 20px; }
+.logo img { width: 86px; height: 97px; }
+h1 { font-size: 2.5rem; text-align: center; margin: 10px 0 4px; }
+p.subtitle { text-align: center; color: #666; margin-bottom: 20px; font-size: 1rem; }
+.section { background-color: var(--section-bg); padding: 14px; margin-bottom: 20px; border-radius: 12px; }
+.section-title { font-weight: 600; margin-bottom: 10px; font-size: 1rem; color: var(--accent-color); }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.button { width: 100%; padding: 14px; font-size: 1rem; background-color: var(--accent-color); color: white; border: none; border-radius: 10px; margin-top: 30px; cursor: pointer; transition: background-color 0.2s ease; }
+.button:hover { background-color: #e97f3b; }
+
+/* --- ★★★ 태그 관련 스타일 재정의 ★★★ --- */
+
+/* 1. 실제 체크박스는 화면에서 완전히 숨깁니다. */
+.tag-checkbox {
+  display: none;
 }
 
-body {
-  margin: 0;
-  background-color: var(--bg-color);
-  font-family: "Pretendard", "Noto Sans KR", sans-serif;
-  color: var(--text-color);
-  padding: 20px;
-  line-height: 1.4;
-}
-
-.container {
-  max-width: 480px;
-  margin: 0 auto;
-}
-
-.logo {
-  text-align: center;
-  position: relative;
-  top: 20px;
-}
-
-.logo img {
-  width: 86px;
-  height: 97px;
-}
-
-h1 {
-  font-size: 2.5rem;
-  text-align: center;
-  margin: 10px 0 4px;
-}
-
-p.subtitle {
-  text-align: center;
-  color: #666;
-  margin-bottom: 20px;
-  font-size: 1rem;
-}
-
-.section {
-  background-color: var(--section-bg);
-  padding: 14px;
-  margin-bottom: 20px;
-  border-radius: 12px;
-}
-
-.section-title {
-  font-weight: 600;
-  margin-bottom: 10px;
-  font-size: 1rem;
-  color: var(--accent-color);
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
+/* 2. 모든 태그(label)의 기본 스타일을 여기서 한 번만 정의합니다. */
 .tag {
+  display: inline-block; /* label이 inline 요소이므로 block 속성을 줍니다. */
   background-color: #e7e7e7;
+  color: #333;
   padding: 8px 16px;
   border-radius: 999px;
   font-size: 0.88rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  border: 2px solid transparent; /* 선택 시 테두리를 위한 공간 확보 */
 }
 
-.tag.selected {
+/* 3. 체크박스가 선택되었을 때, 연결된 라벨(.tag)의 스타일을 변경합니다. */
+.tag-checkbox:checked + .tag {
   background-color: var(--tag-active);
   color: var(--tag-active-text);
-}
-
-.button {
-  width: 100%;
-  padding: 14px;
-  font-size: 1rem;
-  background-color: var(--accent-color);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  margin-top: 30px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.button:hover {
-  background-color: #e97f3b;
-}
-/* 1. 실제 체크박스는 화면에서 숨깁니다. */
-.tag-checkbox {
-  display: none;
-}
-
-/* 2. 체크박스와 연결된 라벨(태그)의 기본 스타일을 설정합니다. */
-.tag-checkbox + .tag {
-  /* 여기에 기존 .tag 스타일을 그대로 두거나 필요시 추가합니다. */
-  background-color: #e7e7e7;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-/* 3. (핵심) 체크박스가 선택되었을 때(checked), 
-      바로 다음에 오는(+) 라벨(.tag)의 스타일을 변경합니다. */
-.tag-checkbox:checked + .tag {
-  background-color: var(--tag-active); /* 선택 시 배경색 (검은색) */
-  color: var(--tag-active-text);      /* 선택 시 글자색 (흰색) */
-  font-weight: bold;                  /* 선택 시 글자 굵게 (선택 사항) */
+  font-weight: bold;
+  border-color: var(--accent-color); /* 선택 시 테두리 색상 변경 (선택 사항) */
 }

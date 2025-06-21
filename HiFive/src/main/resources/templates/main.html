@@ -1,110 +1,91 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>한잔하酒 키워드 선택</title>
-<link rel="stylesheet" href="/css/main.css" />
-<script src="/js/main.js" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>한잔하酒 키워드 선택</title>
+    <!-- CSS와 JS 링크는 그대로 유지합니다 -->
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <script th:src="@{/js/main.js}" defer></script>
 </head>
 <body th:with="loginUser=${session.loginUser}">
-	<div class="container">
-		<div class="logo">
-			<!-- Thymeleaf 경로로 수정 -->
-			<img th:src="@{/images/logo.png}" alt="로고" />
-		</div>
-		<h1>한잔하酒</h1>
-		<p class="subtitle">기분이나 상황에 맞는 술집을 매칭받으세요 :)</p>
-
-		<!-- ★★★ 백엔드 전송을 위한 form 태그로 전체를 감쌉니다 ★★★ -->
-		<form th:action="@{/recommend}" method="post">
-
-			<!-- 지역 선택 (현재는 시각적 요소로만 두고, 기능 확장은 추후에 가능) -->
-			<div class="section">
-				<div class="section-title">시/도</div>
-				<div class="tags" id="city">
-					<div class="tag selected">광주광역시</div>
-				</div>
-			</div>
-			<div class="section">
-				<div class="section-title">구</div>
-				<div class="tags" id="districts">					
-					 <!-- name="addressTags"로 주소 관련 태그를 따로 받습니다. -->
-            <input type="checkbox" name="addressTags" value="동구" id="dist1" class="tag-checkbox"><label for="dist1" class="tag">동구</label>
-            <input type="checkbox" name="addressTags" value="서구" id="dist2" class="tag-checkbox"><label for="dist2" class="tag">서구</label>
-            <input type="checkbox" name="addressTags" value="남구" id="dist3" class="tag-checkbox"><label for="dist3" class="tag">남구</label>
-            <input type="checkbox" name="addressTags" value="북구" id="dist4" class="tag-checkbox"><label for="dist4" class="tag">북구</label>
-            <input type="checkbox" name="addressTags" value="광산" id="dist5" class="tag-checkbox"><label for="dist5" class="tag">광산구</label>
+    <div class="container">
+        <div class="logo">
+            <img th:src="@{/images/logo.png}" alt="로고" />
         </div>
-				</div>
-			</div>
-			<div class="section">
-				<div class="section-title">동</div>
-				<div class="tags" id="neighborhoods"></div>
-				<!-- 이 부분은 JavaScript가 동적으로 채워줍니다. -->
-            <!-- JS에서 <input type="checkbox" name="addressTags" ...> 형태로 생성해야 합니다. -->
-			</div>
+        <h1>한잔하酒</h1>
+        <p class="subtitle">기분이나 상황에 맞는 술집을 매칭받으세요 :)</p>
 
-			<!-- 상황 태그 선택 (input checkbox로 변경) -->
-			<div class="section">
-				<div class="section-title">상황</div>
-				<div class="tags" id="situations">
-					<input type="checkbox" name="categories" value="단체모임" id="sit1"
-						class="tag-checkbox"><label for="sit1" class="tag">#
-						단체모임</label> <input type="checkbox" name="tags" value="생일" id="sit2"
-						class="tag-checkbox"><label for="sit2" class="tag">#
-						생일</label> <input type="checkbox" name="tags" value="응원" id="sit3"
-						class="tag-checkbox"><label for="sit3" class="tag">#
-						응원</label> <input type="checkbox" name="tags" value="데이트" id="sit4"
-						class="tag-checkbox"><label for="sit4" class="tag">#
-						데이트</label> <input type="checkbox" name="tags" value="회식" id="sit5"
-						class="tag-checkbox"><label for="sit5" class="tag">#
-						회식</label> <input type="checkbox" name="tags" value="혼술" id="sit6"
-						class="tag-checkbox"><label for="sit6" class="tag">#
-						혼술</label>
-				</div>
-			</div>
+        <form th:action="@{/recommend}" method="post">
 
-			<!-- 감정 태그 선택 (input checkbox로 변경) -->
-			<div class="section">
-				<div class="section-title">감정</div>
-				<div class="tags" id="emotions">
-					<input type="checkbox" name="tags" value="기쁨" id="emo1"
-						class="tag-checkbox"><label for="emo1" class="tag">#
-						기쁨</label> <input type="checkbox" name="tags" value="즐거움" id="emo2"
-						class="tag-checkbox"><label for="emo2" class="tag">#
-						즐거움</label> <input type="checkbox" name="tags" value="설렘" id="emo3"
-						class="tag-checkbox"><label for="emo3" class="tag">#
-						설렘</label> <input type="checkbox" name="tags" value="로맨틱" id="emo4"
-						class="tag-checkbox"><label for="emo4" class="tag">#
-						로맨틱</label> <input type="checkbox" name="tags" value="위로" id="emo5"
-						class="tag-checkbox"><label for="emo5" class="tag">#
-						위로</label> <input type="checkbox" name="tags" value="스트레스" id="emo6"
-						class="tag-checkbox"><label for="emo6" class="tag">#
-						스트레스</label> <input type="checkbox" name="tags" value="감성" id="emo7"
-						class="tag-checkbox"><label for="emo7" class="tag">#
-						감성</label>
-				</div>
-			</div>
+            <!-- 지역 선택 -->
+            <div class="section">
+                <div class="section-title">시/도</div>
+                <div class="tags" id="city">
+                    <div class="tag selected">광주광역시</div>
+                </div>
+            </div>
 
-			<!-- ★★★ 버튼 타입을 submit으로 변경 ★★★ -->
-			<button type="submit" id="submit-btn" class="button">술집 찾기</button>
-		</form>
+            <!-- ★★★ "구" 선택 섹션 구조 수정 ★★★ -->
+            <div class="section">
+                <div class="section-title">구</div>
+                <div class="tags" id="districts">
+                    <input type="checkbox" name="addressTags" value="동구" id="dist1" class="tag-checkbox"><label for="dist1" class="tag">동구</label>
+                    <input type="checkbox" name="addressTags" value="서구" id="dist2" class="tag-checkbox"><label for="dist2" class="tag">서구</label>
+                    <input type="checkbox" name="addressTags" value="남구" id="dist3" class="tag-checkbox"><label for="dist3" class="tag">남구</label>
+                    <input type="checkbox" name="addressTags" value="북구" id="dist4" class="tag-checkbox"><label for="dist4" class="tag">북구</label>
+                    <input type="checkbox" name="addressTags" value="광산구" id="dist5" class="tag-checkbox"><label for="dist5" class="tag">광산구</label>
+                </div>
+            </div>
 
-		<!-- 로그인/로그아웃 버튼 (상단이나 하단 등 적절한 위치에 추가) -->
-		<div class="user-actions"
-			style="position: absolute; top: 20px; right: 20px;">
-			<!-- ★★★ session.loginUser로 명확하게 접근 ★★★ -->
-			<div th:if="${session.loginUser != null}">
-				<a th:href="@{/mypage}" style="color: white; margin-right: 15px;"
-					th:text="|${session.loginUser.nickname}님|"></a> <a
-					th:href="@{/logout}" style="color: white;">로그아웃</a>
-			</div>
-			<div th:if="${session.loginUser == null}">
-				<a th:href="@{/login}" style="color: white;">로그인</a>
-			</div>
-		</div>
+            <!-- "동" 선택 섹션 -->
+            <div class="section">
+                <div class="section-title">동</div>
+                <div class="tags" id="neighborhoods">
+                    <!-- 이 부분은 JavaScript가 동적으로 채워줍니다. -->
+                </div>
+            </div>
 
-	</div>
+            <!-- ★★★ 상황 태그 name 속성을 "categories"로 통일 ★★★ -->
+            <div class="section">
+                <div class="section-title">상황</div>
+                <div class="tags" id="situations">
+                    <input type="checkbox" name="categories" value="단체모임" id="sit1" class="tag-checkbox"><label for="sit1" class="tag"># 단체모임</label>
+                    <input type="checkbox" name="categories" value="생일" id="sit2" class="tag-checkbox"><label for="sit2" class="tag"># 생일</label>
+                    <input type="checkbox" name="categories" value="응원" id="sit3" class="tag-checkbox"><label for="sit3" class="tag"># 응원</label>
+                    <input type="checkbox" name="categories" value="데이트 / 썸" id="sit4" class="tag-checkbox"><label for="sit4" class="tag"># 데이트</label>
+                    <input type="checkbox" name="categories" value="회식" id="sit5" class="tag-checkbox"><label for="sit5" class="tag"># 회식</label>
+                    <input type="checkbox" name="categories" value="혼술" id="sit6" class="tag-checkbox"><label for="sit6" class="tag"># 혼술</label>
+                </div>
+            </div>
+
+            <!-- ★★★ 감정 태그 name 속성을 "categories"로 통일 ★★★ -->
+            <div class="section">
+                <div class="section-title">감정</div>
+                <div class="tags" id="emotions">
+                    <input type="checkbox" name="categories" value="기쁨/신남" id="emo1" class="tag-checkbox"><label for="emo1" class="tag"># 기쁨</label>
+                    <input type="checkbox" name="categories" value="즐거움" id="emo2" class="tag-checkbox"><label for="emo2" class="tag"># 즐거움</label>
+                    <input type="checkbox" name="categories" value="설렘 /기대" id="emo3" class="tag-checkbox"><label for="emo3" class="tag"># 설렘</label>
+                    <input type="checkbox" name="categories" value="로맨틱" id="emo4" class="tag-checkbox"><label for="emo4" class="tag"># 로맨틱</label>
+                    <input type="checkbox" name="categories" value="위로" id="emo5" class="tag-checkbox"><label for="emo5" class="tag"># 위로</label>
+                    <input type="checkbox" name="categories" value="스트레스" id="emo6" class="tag-checkbox"><label for="emo6" class="tag"># 스트레스</label>
+                    <input type="checkbox" name="categories" value="고독/감성적" id="emo7" class="tag-checkbox"><label for="emo7" class="tag"># 감성</label>
+                </div>
+            </div>
+
+            <button type="submit" class="button">술집 찾기</button>
+        </form>
+
+        <!-- 로그인/로그아웃 버튼 -->
+        <div class="user-actions" style="position: absolute; top: 20px; right: 20px;">
+            <div th:if="${session.loginUser != null}">
+                <a th:href="@{/mypage}" style="color: white; margin-right: 15px;" th:text="|${session.loginUser.nickname}님|"></a>
+                <a th:href="@{/logout}" style="color: white;">로그아웃</a>
+            </div>
+            <div th:if="${session.loginUser == null}">
+                <a th:href="@{/login}" style="color: white;">로그인</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
