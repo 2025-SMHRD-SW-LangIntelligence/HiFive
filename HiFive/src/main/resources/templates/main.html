@@ -28,25 +28,28 @@
 			</div>
 			<div class="section">
 				<div class="section-title">구</div>
-				<div class="tags" id="districts">
-					<!-- (JS로 동적 처리되므로 일단 그대로 둡니다) -->
-					<div class="tag" data-dong="donggu">동구</div>
-					<div class="tag" data-dong="seogu">서구</div>
-					<div class="tag" data-dong="namgu">남구</div>
-					<div class="tag" data-dong="bukgu">북구</div>
-					<div class="tag" data-dong="gwangsan">광산구</div>
+				<div class="tags" id="districts">					
+					 <!-- name="addressTags"로 주소 관련 태그를 따로 받습니다. -->
+            <input type="checkbox" name="addressTags" value="동구" id="dist1" class="tag-checkbox"><label for="dist1" class="tag">동구</label>
+            <input type="checkbox" name="addressTags" value="서구" id="dist2" class="tag-checkbox"><label for="dist2" class="tag">서구</label>
+            <input type="checkbox" name="addressTags" value="남구" id="dist3" class="tag-checkbox"><label for="dist3" class="tag">남구</label>
+            <input type="checkbox" name="addressTags" value="북구" id="dist4" class="tag-checkbox"><label for="dist4" class="tag">북구</label>
+            <input type="checkbox" name="addressTags" value="광산" id="dist5" class="tag-checkbox"><label for="dist5" class="tag">광산구</label>
+        </div>
 				</div>
 			</div>
 			<div class="section">
 				<div class="section-title">동</div>
 				<div class="tags" id="neighborhoods"></div>
+				<!-- 이 부분은 JavaScript가 동적으로 채워줍니다. -->
+            <!-- JS에서 <input type="checkbox" name="addressTags" ...> 형태로 생성해야 합니다. -->
 			</div>
 
 			<!-- 상황 태그 선택 (input checkbox로 변경) -->
 			<div class="section">
 				<div class="section-title">상황</div>
 				<div class="tags" id="situations">
-					<input type="checkbox" name="tags" value="단체모임" id="sit1"
+					<input type="checkbox" name="categories" value="단체모임" id="sit1"
 						class="tag-checkbox"><label for="sit1" class="tag">#
 						단체모임</label> <input type="checkbox" name="tags" value="생일" id="sit2"
 						class="tag-checkbox"><label for="sit2" class="tag">#

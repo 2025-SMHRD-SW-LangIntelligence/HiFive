@@ -1,16 +1,11 @@
 package com.smhrd.gitest.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.smhrd.gitest.dto.StoreDto;
+import com.smhrd.gitest.entity.StoreEntity;
+import com.smhrd.gitest.repository.StoreRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.smhrd.gitest.dto.StoreDto;
-import com.smhrd.gitest.entity.StoreEntity;
-import com.smhrd.gitest.entity.StoreRecommendationScoreEntity;
-import com.smhrd.gitest.repository.MoodTagRepository;
-import com.smhrd.gitest.repository.StoreRecommendationScoreRepository;
-import com.smhrd.gitest.repository.StoreRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -18,80 +13,62 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-
-@Service //실제 구현될 서비스 내용
+@Service
 public class StoreServiceImpl implements StoreService {
-	
-	@Autowired
-	private StoreRepository storeRepository;
-	
-	@Autowired
-	private MoodTagRepository moodTagRepository;
-	
-	@Autowired
-	private StoreRecommendationScoreRepository scoreRepository;
 
-	    public StoreServiceImpl(StoreRepository storeRepository, StoreRecommendationScoreRepository scoreRepository) {
-	        this.storeRepository = storeRepository;
-	        this.scoreRepository = scoreRepository;
-	        
-	    }
+    private final StoreRepository storeRepository;
 
-	    // 전체 술집 목록 조회
-	    @Override
-	    public List<StoreEntity> findAllStores() {
-	        return storeRepository.findAll();
-	    }
+    public StoreServiceImpl(StoreRepository storeRepository) {
+        this.storeRepository = storeRepository;
+    }
 
-	    // 술집 ID로 조회
-	    @Override
-	    public Optional<StoreEntity> findStoreById(Long storeId) {
-	        return storeRepository.findById(storeId);
-	    }
+    @Override
+    public Optional<StoreEntity> findStoreById(Long storeId) {
+        return storeRepository.findById(storeId);
+    }
 
-	    // (예시) 상위 5개 술집만 가져오는 로직
-	    @Override
-	    public List<StoreEntity> getTopPicks() {
-	        return storeRepository.findTop5ByOrderByStoreIdAsc();
-	    }
-	    @Override
-	    public List<StoreDto> recommendStoresByTags(List<String> tagNames) {
-	        // 1. 태그 이름으로 태그 ID 목록 조회
-	        List<Long> tagIds = moodTagRepository.findTagIdsByTagNames(tagNames);
-	        if (tagIds.isEmpty()) {
-	            return List.of(); // 일치하는 태그가 없으면 빈 리스트 반환
-	        }
+    @Override
+    public List<StoreDto> getTopRatedStores(int limit) {
+        // 이 로직은 파이썬 점수 테이블을 사용하거나,
+        // 지금처럼 단순히 ID 순으로 상위 N개를 가져오는 방식으로 사용할 수 있습니다.
+        return storeRepository.findTop5ByOrderByStoreIdAsc().stream()
+                .map(StoreDto::fromEntity)
+                .collect(Collectors.toList());
+    }
 
-	        // 2. 태그 ID와 일치하는 store_id를 '일치 개수' 순으로 정렬하여 조회
-	        List<Long> recommendedStoreIds = storeRepository.findStoreIdsByTags(tagIds);
-	        if (recommendedStoreIds.isEmpty()) {
-	            return List.of();
-	        }
+    // ★★★ (최종 추천 로직) ★★★
+    @Override
+    public List<StoreDto> recommendByFilters(List<String> categories, List<String> addressTags) {
+        
+        List<StoreEntity> initialRecommendations;
 
-	        // 3. 조회된 store_id 목록으로 실제 StoreEntity 정보 조회
-	        List<StoreEntity> recommendedStores = storeRepository.findAllById(recommendedStoreIds);
+        // 1. 카테고리(감정/상황) 기반으로 1차 추천 목록 생성
+        if (categories == null || categories.isEmpty()) {
+            // 선택된 카테고리가 없으면, 전체 가게를 대상으로 함
+            initialRecommendations = storeRepository.findAll();
+        } else {
+            // 카테고리 기반 추천 쿼리 실행
+            List<Long> storeIds = storeRepository.findRecommendedStoreIdsByCategories(categories);
+            initialRecommendations = storeRepository.findAllById(storeIds);
+        }
 
-	        // 4. 순서 보정 및 DTO 변환 (findAllById는 순서를 보장하지 않으므로)
-	        Map<Long, StoreEntity> storeMap = recommendedStores.stream()
-	        		.collect(Collectors.toMap(StoreEntity::getStoreId, store -> store));
+        // 2. 주소 태그로 2차 필터링
+        List<StoreEntity> finalRecommendations;
+        if (addressTags == null || addressTags.isEmpty()) {
+            // 선택된 주소가 없으면 1차 추천 목록을 그대로 사용
+            finalRecommendations = initialRecommendations;
+        } else {
+            // 1차 추천 목록에서, 주소가 일치하는 가게만 필터링
+            finalRecommendations = initialRecommendations.stream()
+                .filter(store -> addressTags.stream()
+                                            .anyMatch(tag -> store.getAddress().contains(tag)))
+                .collect(Collectors.toList());
+        }
 
-	        return recommendedStoreIds.stream()
-	                .map(storeMap::get)
-	                .map(StoreDto::fromEntity)
-	                .collect(Collectors.toList());
-	    }
-	    @Override
-	    public List<StoreDto> getTopRatedStores(int limit) {
-	        // Pageable 객체를 사용하여 상위 limit 개수만큼만 가져오도록 설정
-	        Pageable pageable = PageRequest.of(0, limit);
-
-	        // 점수 높은 순으로 가게 점수 정보 조회
-	        List<StoreRecommendationScoreEntity> topScores = scoreRepository.findTopStoresByScore(pageable);
-
-	        // StoreRecommendationScoreEntity 리스트에서 StoreDto 리스트로 변환
-	        return topScores.stream()
-	                .map(scoreEntity -> StoreDto.fromEntity(scoreEntity.getStore()))
-	                .collect(Collectors.toList());
-	    }
-	    
-	}
+        // 3. 최종 결과를 DTO로 변환하여 반환
+        // (만약 순서 보정이 필요하다면, 이전 답변의 Map을 사용한 순서 보정 로직을 여기에 추가)
+        return finalRecommendations.stream()
+                .map(StoreDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+}

@@ -24,9 +24,16 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
     // ★★★ findTop5ByOrderByStoreIdAsc -> findTop5ByOrderByIdAsc 로 수정 (storeId -> id) ★★★
     List<StoreEntity> findTop5ByOrderByStoreIdAsc();
     
-    // 4. 태그 기반 추천 시스템용 쿼리 (이 코드는 수정할 필요 없음)
-    // 네이티브 쿼리는 엔티티 필드명이 아닌, 실제 DB 컬럼명('store_id')을 사용하므로 그대로 둡니다.
-    @Query(value = "SELECT store_id FROM store_tag WHERE tag_id IN :tagIds GROUP BY store_id ORDER BY COUNT(store_id) DESC LIMIT 20",
-           nativeQuery = true)
-    List<Long> findStoreIdsByTags(@Param("tagIds") List<Long> tagIds);
+ // ★★★ 새로운 추천 시스템 쿼리만 남깁니다 ★★★
+    @Query(value =
+        "SELECT st.store_id " +
+        "FROM store_tag st " +
+        "JOIN mood_tag mt ON st.tag_id = mt.tag_id " +
+        "JOIN recommendation_rule rr ON mt.tag_name = rr.tag_name " +
+        "WHERE rr.category IN (:categories) " +
+        "GROUP BY st.store_id " +
+        "ORDER BY SUM(rr.weight) DESC " +
+        "LIMIT 20",
+        nativeQuery = true)
+    List<Long> findRecommendedStoreIdsByCategories(@Param("categories") List<String> categories);
 }
