@@ -41,6 +41,12 @@ p.subtitle { text-align: center; color: #666; margin-bottom: 20px; font-size: 1r
   transition: all 0.2s ease;
   border: 2px solid transparent; /* 선택 시 테두리를 위한 공간 확보 */
 }
+/*2.5 selected 클래스가 붙었을때의 스타일은 여기서 정의합니다. */
+.tag.selected {
+  background-color: var(--tag-active); /* var(--tag-active)는 #222 입니다. */
+  color: var(--tag-active-text);      /* var(--tag-active-text)는 #fff 입니다. */
+  font-weight: bold;
+}
 
 /* 3. 체크박스가 선택되었을 때, 연결된 라벨(.tag)의 스타일을 변경합니다. */
 .tag-checkbox:checked + .tag {
@@ -49,3 +55,4 @@ p.subtitle { text-align: center; color: #666; margin-bottom: 20px; font-size: 1r
   font-weight: bold;
   border-color: var(--accent-color); /* 선택 시 테두리 색상 변경 (선택 사항) */
 }
+
