@@ -4,114 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>한잔하주 추천 결과</title>
-  <link rel="stylesheet" th:href="@{/css/result.css}" />
-  <style>
-    body {
-      margin: 0;
-      font-family: "Pretendard", "Noto Sans KR", sans-serif;
-      background-color: #fff;
-      color: #111;
-      padding-bottom: 40px;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: #1a1826;
-      color: white;
-      padding: 16px 20px;
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
-
-    .back-btn,
-    .mypage-btn {
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .result-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .result-tags {
-      font-weight: bold;
-      color: #ff914d;
-      font-size: 1.1rem;
-    }
-
-    .store-card {
-      background-color: #fafafa;
-      color: #111;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid #ddd;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-      margin: 20px auto;
-      max-width: 400px;
-      transition: background-color 0.2s;
-    }
-
-    .store-card:hover {
-      background-color: #f5f5f5;
-    }
-
-    .store-card img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-bottom: 1px solid #eee;
-    }
-
-    .card-body {
-      padding: 16px;
-    }
-
-    .store-title {
-      font-size: 1.3rem;
-      margin: 0 0 10px;
-      font-weight: bold;
-    }
-
-    .store-info {
-      font-size: 0.95rem;
-      color: #444;
-      margin: 6px 0;
-    }
-
-    .btn {
-      background-color: transparent;
-      border: 1px solid #ff914d;
-      color: #ff914d;
-      border-radius: 8px;
-      padding: 8px 16px;
-      text-decoration: none;
-      font-size: 0.9rem;
-      display: inline-block;
-      transition: all 0.3s ease;
-      text-align: center;
-    }
-
-    .btn:hover {
-      background-color: #ff914d;
-      color: white;
-    }
-
-    .no-result {
-      text-align: center;
-      margin-top: 40px;
-      color: #777;
-      font-size: 1rem;
-    }
-  </style>
+  <link rel="stylesheet" th:href="@{/css/recommend.css}" />
 </head>
 <body>
   <header>
@@ -123,12 +16,12 @@
   <div class="container">
     <div class="result-header">
       <p>
-        <span class="result-tags" th:text="|'#${#strings.listJoin(selectedTags, ' #')}'|">#태그</span>
+        <span class="result-tags" th:text="|'#${#strings.listJoin(selectedTags, ' #')}'|">#감정태그</span>
         에 대한 추천 결과입니다.
       </p>
     </div>
 
-    <div class="row" style="display: flex; flex-wrap: wrap; justify-content: center;">
+    <div class="row">
       <div class="store-card" th:each="store : ${recommendedStores}">
         <img th:if="${store.photoUrl != null}" th:src="${store.photoUrl}" alt="가게 사진" />
         <img th:if="${store.photoUrl == null}" th:src="@{/images/default-store.png}" alt="기본 이미지" />
@@ -139,7 +32,7 @@
             <strong>평점:</strong>
             <span th:text="${store.rating != null ? store.rating : 'N/A'}" style="color: #f5a623;">0.0</span>
           </p>
-          <div style="text-align: center; margin-top: 12px;">
+          <div style="text-align: center;">
             <a th:href="@{/store/{id}(id=${store.storeId})}" class="btn">상세 보기</a>
           </div>
         </div>

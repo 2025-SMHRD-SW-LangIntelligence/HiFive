@@ -1,0 +1,117 @@
+@charset "UTF-8";
+	body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      background-color: #fffdfa;
+      color: #111;
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 14px 20px;
+      background-color: #1e1d2b;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      gap: 14px;
+    }
+
+    .back-btn {
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .header-title {
+      font-size: 1.1rem;
+    }
+
+    .mypage-btn {
+      margin-left: auto;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .result-header {
+      text-align: center;
+      margin: 20px 0 30px;
+    }
+
+    .result-tags {
+      font-weight: bold;
+      color: #ff914d;
+      font-size: 1.1rem;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .store-card {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      width: 320px;
+      transition: transform 0.2s ease;
+    }
+
+    .store-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .store-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-body {
+      padding: 16px;
+    }
+
+    .store-title {
+      font-size: 1.2rem;
+      margin: 0 0 8px;
+      font-weight: bold;
+    }
+
+    .store-info {
+      font-size: 0.95rem;
+      color: #444;
+      margin: 4px 0;
+    }
+
+    .btn {
+      background-color: #ff914d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background-color: #ff7a26;
+    }
+
+    .no-result {
+      text-align: center;
+      font-size: 1rem;
+      margin-top: 40px;
+      color: #888;
+    }
