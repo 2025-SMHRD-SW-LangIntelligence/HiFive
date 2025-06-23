@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${store.storeName} + ' - 상세 정보'">술집 상세 정보</title>
+    <title th:text="${store.shopName} + ' - 상세 정보'">술집 상세 정보</title>
     <link rel="stylesheet" th:href="@{/css/detail.css}" />
     <!-- ★★★ 불필요한 detail.js 링크는 삭제합니다. ★★★ -->
 </head>
@@ -28,8 +28,8 @@
         </div>
         
         <h2 th:text="${store.shopName}">가게 이름</h2>
-        <p><strong>위치:</strong> <span th:text="${store.storeLocation}"></span></p>
-        <p><strong>사장님:</strong> <span th:text="${store.storeOwner}"></span></p>
+        <p><strong>위치:</strong> <span th:text="${store.address}"></span></p>
+        
     </div>
 
     <hr>

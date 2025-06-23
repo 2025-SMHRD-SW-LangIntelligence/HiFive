@@ -32,7 +32,7 @@
     <div th:if="${!#lists.isEmpty(myReviews)}">
       <div class="review" th:each="review : ${myReviews}">
         <!-- ReviewEntity에 store 필드가 있으므로, 가게 이름에 접근 가능 -->
-        <h2 th:text="${review.store.store_name}">술집 이름</h2>
+        <h2 th:text="${review.store.shopName}">술집 이름</h2>
         <!-- ReviewEntity에 createdAt 필드가 있다면 날짜 표시 가능 -->
         <!-- <p><strong>날짜:</strong> <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}"></span></p> -->
         <p th:text="${review.content}">리뷰 내용</p>
