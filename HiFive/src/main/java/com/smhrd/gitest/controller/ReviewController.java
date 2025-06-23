@@ -1,9 +1,16 @@
 package com.smhrd.gitest.controller;
 
+import com.smhrd.gitest.dto.StoreDto;
 import com.smhrd.gitest.entity.MemberEntity;
 import com.smhrd.gitest.entity.ReviewEntity;
+import com.smhrd.gitest.service.MemberWishlistService;
 import com.smhrd.gitest.service.ReviewService;
+import com.smhrd.gitest.service.StoreService;
+
 import jakarta.servlet.http.HttpSession;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +24,13 @@ public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;
-
+    
+    @Autowired
+    private StoreService storeService; // 가계정보를 위해 StoreService 주입
+    
+    @Autowired
+    private MemberWishlistService wishlistService;
+    // 리뷰 작성 처리
     @PostMapping("/reviews/add")
     public String addReview(@RequestParam("storeId") Long storeId, // ★★★ 여기서 'storeId'가 선언되었습니다.
                             @RequestParam("content") String content,
@@ -67,24 +80,30 @@ public class ReviewController {
     @PostMapping("/reviews/update")
     public String updateReview(@RequestParam("reviewId") Long reviewId,
                                @RequestParam("content") String content,
-                               HttpSession session) {
+                               @RequestParam(value="returnUrl",defaultValue = "/recommend") String returnUrl,
+                               HttpSession session
+                               ) { // ★ Model 파라미터가 추가되었습니다.
         MemberEntity loginUser = (MemberEntity) session.getAttribute("loginUser");
         if (loginUser == null) {
             return "redirect:/login";
         }
 
-        // 서비스에 리뷰 수정 요청 (내부에서 권한 확인 로직 추가 권장)
+        // 1. 리뷰 수정 서비스 호출
         ReviewEntity updatedReview = reviewService.updateReview(reviewId, content, loginUser.getEmail());
+        
 
-        // 수정 완료 후, 해당 리뷰가 있었던 가게 상세 페이지로 이동
-        return "redirect:/store/" + updatedReview.getStore().getStoreId();
+        // 2.  가게 상세 페이지 URL로 리다이렉트합니다.
+        
+        
+        return "redirect:" + returnUrl;
+    
     }
 
     // === 리뷰 삭제 기능 ===
 
     @PostMapping("/reviews/delete")
     public String deleteReview(@RequestParam("reviewId") Long reviewId,
-                               @RequestParam("storeId") Long storeId,
+    		@RequestParam(value = "returnUrl", defaultValue = "/recommend") String returnUrl, // ★ returnUrl 받기
                                HttpSession session) {
         MemberEntity loginUser = (MemberEntity) session.getAttribute("loginUser");
         if (loginUser == null) {
@@ -95,7 +114,7 @@ public class ReviewController {
         reviewService.deleteReview(reviewId, loginUser.getEmail());
 
         // 삭제 완료 후, 해당 리뷰가 있었던 가게 상세 페이지로 이동
-        return "redirect:/store/" + storeId;
+        return "redirect:" + returnUrl;
     }
    
 }

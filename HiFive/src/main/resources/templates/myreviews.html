@@ -78,6 +78,19 @@
       <div class="review" th:each="review : ${myReviews}">
         <h2 th:text="${review.store.shopName}">술집 이름</h2>
         <p th:text="${review.content}">리뷰 내용</p>
+        
+        <!-- 수정/삭제 버튼 추가 -->
+        <div class="review-actions" style = "margin-top: 10px">
+        <!-- 수정 버튼 : 수정 폼 페이지로 이동 -->
+        <a th:href="@{/reviews/edit/{id}(id=${review.review_id},returnUrl='/myreviews')}" class="btn btn-sm btn-secondary">수정</a>
+        <!-- 삭제 버튼: form으로 안전하게 삭제 요청 -->
+          <form th:action="@{/reviews/delete}" method="post" style="display: inline;" onsubmit="return confirm('정말 이 리뷰를 삭제하시겠습니까?');">
+            <input type="hidden" name="reviewId" th:value="${review.review_id}" />
+            <input type="hidden" name="storeId" th:value="${review.store.storeId}" />
+            <input type="hidden" name= "returnUrl" value="/myreviews"/>
+            <button type="submit" class="btn btn-sm btn-danger">삭제</button>
+          </form>
+        </div>
       </div>
     </div>
 

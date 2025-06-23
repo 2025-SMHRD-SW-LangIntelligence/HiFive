@@ -12,13 +12,13 @@
     <form th:action="@{/reviews/update}" method="post">
         <!-- 어떤 리뷰를 수정할지 알려주기 위해 reviewId를 숨겨서 전달 -->
         <input type="hidden" name="reviewId" th:value="${review.review_id}" />
-        
+        <input type="hidden" name="returnUrl" th:value="${param.returnUrl}" />>
         <div>
             <textarea name="content" rows="4" cols="50" required th:text="${review.content}"></textarea>
         </div>
         <br>
         <button type="submit">수정 완료</button>
     </form>
-    <a th:href="@{/store/{id}(id=${review.store.storeId})}">취소하고 돌아가기</a>
+    <button type="button" onclick="history.back()">취소하고 돌아가기</button>
 </body>
 </html>
