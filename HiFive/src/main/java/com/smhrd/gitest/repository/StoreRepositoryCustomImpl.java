@@ -37,7 +37,7 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
             StringBuilder addressConditions = new StringBuilder("(");
             for (int i = 0; i < addressTags.size(); i++) {
                 if (i > 0) {
-                    addressConditions.append(" OR ");
+                    addressConditions.append(" AND ");
                 }
                 addressConditions.append("s.address LIKE :addressTag").append(i).append(" ");
             }
