@@ -51,8 +51,8 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
 
         sql.append(
             "GROUP BY s.store_id " +
-            "ORDER BY COUNT(DISTINCT rr.category) DESC, SUM(rr.weight) DESC " +
-            "LIMIT 20"
+            "ORDER BY COUNT(DISTINCT rr.category) DESC, SUM(rr.weight) DESC " 
+            
         );
         
         // 네이티브 쿼리 생성
