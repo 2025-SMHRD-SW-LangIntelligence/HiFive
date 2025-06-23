@@ -1,59 +1,76 @@
-@charset "UTF-8";
-body {
-        margin: 0;
-        font-family: "Pretendard", "Noto Sans KR", sans-serif;
-        background-color: #fff;
-        color: #111;
-      }
+ @charset "UTF-8";
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      background-color: #fff;
+      color: #111;
+    }
 
-      header {
-        display: flex;
-        align-items: center;
-        background-color: #1a1826;
-        color: white;
-        padding: 16px 20px;
-        font-size: 1.1rem;
-        font-weight: bold;
-      }
+    header {
+      display: flex;
+      align-items: center;
+      background-color: #1a1826;
+      color: white;
+      padding: 16px 20px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
 
-      .back-btn {
-        margin-right: 12px;
-        font-size: 1.3rem;
-        cursor: pointer;
-      }
+    .back-btn {
+      margin-right: 12px;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
 
-      h1 {
-        text-align: center;
-        font-size: 1.8rem;
-        margin: 20px;
-      }
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin: 20px;
+    }
 
-      .place {
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 16px;
-        margin: 16px 20px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        cursor: pointer;
-        transition: background-color 0.2s;
-      }
+    .place {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 16px;
+      margin: 16px 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      transition: background-color 0.2s;
+    }
 
-      .place:hover {
-        background-color: #f7f7f7;
-      }
+    .place:hover {
+      background-color: #f7f7f7;
+    }
 
-      .place h2 {
-        margin: 0 0 8px;
-        font-size: 1.2rem;
-      }
+    .place h2, .place h5 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+    }
 
-      .place p {
-        margin: 4px 0;
-        font-size: 0.95rem;
-      }
+    .place p {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
 
-      .loading {
-        text-align: center;
-        margin: 20px 0;
-        color: #999;
-      }
+    .loading {
+      text-align: center;
+      margin: 20px 0;
+      color: #999;
+    }
+
+    .place a, .place button {
+      display: inline-block;
+      margin-top: 8px;
+      margin-right: 10px;
+      background-color: #ff914d;
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .place button:hover, .place a:hover {
+      background-color: #ff7a26;
+    }

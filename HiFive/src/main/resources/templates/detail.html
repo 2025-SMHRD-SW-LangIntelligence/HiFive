@@ -1,87 +1,200 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${store.shopName} + ' - 상세 정보'">술집 상세 정보</title>
-    <link rel="stylesheet" th:href="@{/css/detail.css}" />
-    <!-- ★★★ 불필요한 detail.js 링크는 삭제합니다. ★★★ -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title th:text="${store.shopName} + ' - 상세 정보'">술집 상세 정보</title>
+  <link rel="stylesheet" th:href="@{/css/detail.css}" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      background-color: #fffdfa;
+      color: #111;
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    /* ✅ 고정된 너비와 가운데 정렬을 위한 wrapper */
+    .wrapper {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .detail {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      position: relative;
+      background-color: white;
+    }
+
+    .detail h2 {
+      font-size: 1.3rem;
+      margin-top: 0;
+    }
+
+    .detail p {
+      font-size: 1rem;
+      margin: 8px 0;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      background-color: #e7e7e7;
+      border-radius: 14px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+    }
+
+    .like-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      user-select: none;
+      color: #e88a6f;
+    }
+
+    .like-btn.liked {
+      color: red;
+    }
+
+    .review-section, .review-form-section {
+      margin-top: 30px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: vertical;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 16px;
+      background-color: #ff914d;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ff7a26;
+    }
+
+    .review-item {
+      margin-bottom: 20px;
+      padding: 12px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      background-color: #fdfdfd;
+    }
+
+    a {
+      color: #ff914d;
+      text-decoration: none;
+      margin-right: 8px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="back-btn" onclick="history.back()">←</div>
-        <h1>술집 상세</h1>
-    </header>
+  <header>
+    <div class="back-btn" onclick="history.back()">←</div>
+    <h1>술집 상세</h1>
+  </header>
 
-    <!-- ★★★ 컨트롤러에서 받은 store 객체로 가게 정보 표시 ★★★ -->
+  <!-- ✅ 전체 내용을 wrapper로 감싸서 너비 제한 -->
+  <div class="wrapper">
     <div class="detail" id="store-detail">
-        <!-- 찜하기/찜취소 버튼 -->
-        <div class="like-btn" th:if="${session.loginUser != null}">
-            <form th:action="@{/wishlist/add}" method="post" th:if="${!store.wishlisted}">
-                <input type="hidden" name="storeId" th:value="${store.storeId}" />
-                <button type="submit">♡ 찜하기</button>
-            </form>
-            <form th:action="@{/wishlist/remove}" method="post" th:if="${store.wishlisted}">
-                <input type="hidden" name="storeId" th:value="${store.storeId}" />
-                <button type="submit">♥ 찜취소</button>
-            </form>
-        </div>
-        
-        <h2 th:text="${store.shopName}">가게 이름</h2>
-        <p><strong>위치:</strong> <span th:text="${store.address}"></span></p>
-        
-    </div>
-
-    <hr>
-
-    <!-- ★★★ 리뷰 목록 표시 ★★★ -->
-    <div class="review-section">
-        <h3>리뷰 목록</h3>
-        <div th:if="${!#lists.isEmpty(reviews)}">
-            <div class="review-item" th:each="review : ${reviews}">
-                <p><strong>작성자:</strong> <span th:text="${review.member.nickname}"></span></p>
-                <p th:text="${review.content}"></p>
-            </div>
-        </div>
-        <div th:if="${#lists.isEmpty(reviews)}">
-            <p>아직 작성된 리뷰가 없습니다.</p>
-        </div>
-    </div>
-
-    <hr>
-    
-    <!-- ★★★ 리뷰 작성 폼 (이전 답변 참고) ★★★ -->
-    <div class="review-form-section">
-        <h3>리뷰 남기기</h3>
-        <div th:if="${session.loginUser != null}">
-            <form th:action="@{/reviews/add}" method="post">
-                <input type="hidden" name="storeId" th:value="${store.storeId}" />
-                <textarea name="content" rows="4" placeholder="리뷰를 남겨주세요." required></textarea>
-                <button type="submit">리뷰 등록</button>
-            </form>
-        </div>
-        <div th:if="${session.loginUser == null}">
-            <p><a th:href="@{/login}">로그인</a> 후 리뷰를 작성할 수 있습니다.</p>
-        </div>
-    </div>
-    
-    <div class="review-item" th:each="review : ${reviews}">
-    <p><strong>작성자:</strong> <span th:text="${review.member.nickname}"></span></p>
-    <p th:text="${review.content}"></p>
-
-    <!-- ★★★ 내가 쓴 리뷰에만 수정/삭제 버튼이 보이도록 함 ★★★ -->
-    <div th:if="${session.loginUser != null and session.loginUser.email == review.member.email}">
-        <!-- 수정 버튼 -->
-        <a th:href="@{/reviews/edit/{id}(id=${review.review_id})}">수정</a>
-        
-        <!-- 삭제 버튼 (JavaScript 확인창 포함) -->
-        <form th:action="@{/reviews/delete}" method="post" style="display: inline;" onsubmit="return confirm('정말 이 리뷰를 삭제하시겠습니까?');">
-            <input type="hidden" name="reviewId" th:value="${review.review_id}" />
-            <input type="hidden" name="storeId" th:value="${review.store.storeId}" />
-            <button type="submit">삭제</button>
+      <div class="like-btn" th:if="${session.loginUser != null}">
+        <form th:action="@{/wishlist/add}" method="post" th:if="${!store.wishlisted}">
+          <input type="hidden" name="storeId" th:value="${store.storeId}" />
+          <button type="submit">♡ 찜하기</button>
         </form>
-    </div>
-</div>
+        <form th:action="@{/wishlist/remove}" method="post" th:if="${store.wishlisted}">
+          <input type="hidden" name="storeId" th:value="${store.storeId}" />
+          <button type="submit">♥ 찜취소</button>
+        </form>
+      </div>
 
+      <h2 th:text="${store.shopName}">가게 이름</h2>
+      <p><strong>위치:</strong> <span th:text="${store.address}"></span></p>
+    </div>
+
+    <hr>
+
+    <div class="review-section">
+      <h3>리뷰 목록</h3>
+      <div th:if="${!#lists.isEmpty(reviews)}">
+        <div class="review-item" th:each="review : ${reviews}">
+          <p><strong>작성자:</strong> <span th:text="${review.member.nickname}"></span></p>
+          <p th:text="${review.content}"></p>
+
+          <div th:if="${session.loginUser != null and session.loginUser.email == review.member.email}">
+            <a th:href="@{/reviews/edit/{id}(id=${review.review_id})}">수정</a>
+            <form th:action="@{/reviews/delete}" method="post" style="display: inline;" onsubmit="return confirm('정말 이 리뷰를 삭제하시겠습니까?');">
+              <input type="hidden" name="reviewId" th:value="${review.review_id}" />
+              <input type="hidden" name="storeId" th:value="${review.store.storeId}" />
+              <button type="submit">삭제</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div th:if="${#lists.isEmpty(reviews)}">
+        <p>아직 작성된 리뷰가 없습니다.</p>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="review-form-section">
+      <h3>리뷰 남기기</h3>
+      <div th:if="${session.loginUser != null}">
+        <form th:action="@{/reviews/add}" method="post">
+          <input type="hidden" name="storeId" th:value="${store.storeId}" />
+          <textarea name="content" rows="4" placeholder="리뷰를 남겨주세요." required></textarea>
+          <button type="submit">리뷰 등록</button>
+        </form>
+      </div>
+      <div th:if="${session.loginUser == null}">
+        <p><a th:href="@{/login}">로그인</a> 후 리뷰를 작성할 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
