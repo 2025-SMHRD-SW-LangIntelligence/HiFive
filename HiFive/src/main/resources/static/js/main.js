@@ -24,11 +24,11 @@ if (gwangjuCityTag) {
     });
 }
 
-// 2. "구" 체크박스 변경 이벤트
+// --- 2. "구" 체크박스 변경 이벤트 수정 ---
 districtCheckboxes.forEach((checkbox) => {
     checkbox.addEventListener('change', () => {
         if (checkbox.checked) {
-            // 다른 '구' 체크박스는 선택 해제
+            // 다른 구 체크 해제
             districtCheckboxes.forEach(cb => {
                 if (cb !== checkbox) cb.checked = false;
             });
@@ -36,6 +36,7 @@ districtCheckboxes.forEach((checkbox) => {
             const dongKey = checkbox.value;
             const dongs = dongData[dongKey] || [];
 
+            // "동" 체크박스 목록 갱신
             neighborhoodsContainer.innerHTML = dongs
                 .map((dong, index) => {
                     const dongId = `dong-${dongKey}-${index}`;
@@ -45,6 +46,17 @@ districtCheckboxes.forEach((checkbox) => {
                     `;
                 })
                 .join("");
+
+            // ✅ "동" 체크박스 단일 선택 처리
+            const dongCheckboxes = neighborhoodsContainer.querySelectorAll('input[type="checkbox"]');
+            dongCheckboxes.forEach(cb => {
+                cb.addEventListener('change', () => {
+                    dongCheckboxes.forEach(other => {
+                        if (other !== cb) other.checked = false;
+                    });
+                });
+            });
+
         } else {
             neighborhoodsContainer.innerHTML = "";
         }
