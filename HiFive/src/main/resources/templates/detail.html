@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title th:text="${store.shopName} + ' - 상세 정보'">술집 상세 정보</title>
   <link rel="stylesheet" th:href="@{/css/detail.css}" />
-  
   <!-- ✅ 카카오 지도 API -->
   <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ed91b1f305426524a89bc89d59643b41&libraries=services"></script>
 </head>
@@ -79,22 +78,37 @@
     </div>
   </div>
 
-  <!-- ✅ 지도 표시 스크립트 (위도/경도 기반) -->
+  <!-- ✅ 지도 표시 스크립트 (주소 기반) -->
   <script th:inline="javascript">
-    let lat = "[[${store.lat}]]";
-    let lng = "[[${store.lng}]]";
+    let storeAddress = [[|${store.cleanAddress}|]];
+    console.log("주소 확인:", storeAddress);
 
     var mapContainer = document.getElementById('map');
     var mapOption = {
-      center: new kakao.maps.LatLng(lat, lng),
+      center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울 기본 위치
       level: 3
     };
 
     var map = new kakao.maps.Map(mapContainer, mapOption);
+    var geocoder = new kakao.maps.services.Geocoder();
 
-    var marker = new kakao.maps.Marker({
-      map: map,
-      position: new kakao.maps.LatLng(lat, lng)
+    geocoder.addressSearch(storeAddress, function(result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+        map.setCenter(coords);
+        var marker = new kakao.maps.Marker({
+          map: map,
+          position: coords
+        });
+
+        // ✅ 인포윈도우도 함께 띄우기 (선택)
+        var infowindow = new kakao.maps.InfoWindow({
+          content: '<div style="padding:5px;font-size:14px;">' + storeAddress + '</div>'
+        });
+        infowindow.open(map, marker);
+      } else {
+        console.error("지도 표시 실패", status);
+      }
     });
   </script>
 </body>
