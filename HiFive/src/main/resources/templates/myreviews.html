@@ -3,99 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>작성한 리뷰 보기</title>
+  <title>내가 작성한 리뷰</title>
   <link rel="stylesheet" th:href="@{/css/myreviews.css}" />
-  <style>
-    body {
-      margin: 0;
-      font-family: "Pretendard", "Noto Sans KR", sans-serif;
-      background-color: #fff;
-      color: #111;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      background-color: #1a1826;
-      color: white;
-      padding: 16px 20px;
-      font-size: 1.4rem;
-      font-weight: bold;
-    }
-
-    .back-btn {
-      margin-right: 12px;
-      font-size: 1.3rem;
-      cursor: pointer;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 1.8rem;
-      margin: 20px;
-    }
-
-    .review {
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 16px;
-      margin: 16px 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-      transition: background-color 0.2s;
-    }
-
-    .review:hover {
-      background-color: #f7f7f7;
-    }
-
-    .review h2 {
-      margin: 0 0 8px;
-      font-size: 1.2rem;
-    }
-
-    .review p {
-      font-size: 0.95rem;
-      margin: 6px 0;
-    }
-
-    .no-review {
-      text-align: center;
-      margin: 40px;
-      color: #777;
-    }
-  </style>
 </head>
 <body>
   <header>
     <div class="back-btn" th:onclick="|location.href='@{/mypage}'|">←</div>
-    작성한 리뷰
+    <div class="header-title">작성한 리뷰</div>
   </header>
 
-  <h1>내가 작성한 리뷰</h1>
-
-  <div id="review-list">
-    <div th:if="${!#lists.isEmpty(myReviews)}">
-      <div class="review" th:each="review : ${myReviews}">
-        <h2 th:text="${review.store.shopName}">술집 이름</h2>
-        <p th:text="${review.content}">리뷰 내용</p>
-        
-        <!-- 수정/삭제 버튼 추가 -->
-        <div class="review-actions" style = "margin-top: 10px">
-        <!-- 수정 버튼 : 수정 폼 페이지로 이동 -->
-        <a th:href="@{/reviews/edit/{id}(id=${review.review_id},returnUrl='/myreviews')}" class="btn btn-sm btn-secondary">수정</a>
-        <!-- 삭제 버튼: form으로 안전하게 삭제 요청 -->
-          <form th:action="@{/reviews/delete}" method="post" style="display: inline;" onsubmit="return confirm('정말 이 리뷰를 삭제하시겠습니까?');">
-            <input type="hidden" name="reviewId" th:value="${review.review_id}" />
-            <input type="hidden" name="storeId" th:value="${review.store.storeId}" />
-            <input type="hidden" name= "returnUrl" value="/myreviews"/>
-            <button type="submit" class="btn btn-sm btn-danger">삭제</button>
-          </form>
-        </div>
-      </div>
+  <div class="container">
+    <div class="section-header">
+      <h2>내가 작성한 리뷰</h2>
     </div>
 
-    <div class="no-review" th:if="${#lists.isEmpty(myReviews)}">
-      아직 작성한 리뷰가 없습니다.
+    <div id="review-list">
+      <div th:if="${!#lists.isEmpty(myReviews)}">
+        <div class="review-card" th:each="review : ${myReviews}">
+          <h3 class="store-name" th:text="${review.store.shopName}">가게 이름</h3>
+          <p class="review-content" th:text="${review.content}">리뷰 내용</p>
+
+          <div class="review-actions">
+            <a th:href="@{/reviews/edit/{id}(id=${review.review_id},returnUrl='/myreviews')}" class="btn">수정</a>
+            <form th:action="@{/reviews/delete}" method="post" style="display: inline;" onsubmit="return confirm('정말 이 리뷰를 삭제하시겠습니까?');">
+              <input type="hidden" name="reviewId" th:value="${review.review_id}" />
+              <input type="hidden" name="storeId" th:value="${review.store.storeId}" />
+              <input type="hidden" name="returnUrl" value="/myreviews" />
+              <button type="submit" class="btn danger">삭제</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-review" th:if="${#lists.isEmpty(myReviews)}">
+        아직 작성한 리뷰가 없습니다.
+      </div>
     </div>
   </div>
 </body>
