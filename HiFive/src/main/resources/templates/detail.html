@@ -78,7 +78,6 @@
 
   <!-- ✅ 지도 스크립트 -->
   <script th:inline="javascript">
-  document.addEventListener("DOMContentLoaded", function () {
     const address = /*[[${store.address}]]*/ "광주광역시 북구";
 
     kakao.maps.load(() => {
@@ -103,7 +102,6 @@
         }
       });
     });
-  });
 </script>
 </body>
 </html>
