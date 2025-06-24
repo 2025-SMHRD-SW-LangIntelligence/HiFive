@@ -8,7 +8,7 @@ public class StoreDto {
 
 	private Long storeId;
     private String shopName;
-    private String address;
+    private String CleanAddress;
     private Double rating;
     private String photoUrl;
     private String midTag;
@@ -22,13 +22,13 @@ public class StoreDto {
     public static StoreDto fromEntity(StoreEntity entity) {
         StoreDto dto = new StoreDto();
         dto.setStoreId(entity.getStoreId());
-        dto.setShopName(entity.getShopName());
-        dto.setAddress(entity.getAddress());
+        dto.setShopName(entity.getShopName());        
         dto.setRating(entity.getRating());
         dto.setPhotoUrl(entity.getPhotoUrl());
         dto.setMidTag(entity.getMidTag());
         dto.setLat(entity.getLat());
         dto.setLng(entity.getLng());
+        dto.setCleanAddress(entity.getCleanAddress());
         // wishlisted는 서비스 계층에서 별도로 설정하므로 여기서는 비워둡니다.
         return dto;
     }
