@@ -79,34 +79,22 @@
     </div>
   </div>
 
-  <!-- ✅ 지도 표시 스크립트 -->
+  <!-- ✅ 지도 표시 스크립트 (위도/경도 기반) -->
   <script th:inline="javascript">
-    let storeAddress = "${store_id}";
+    let lat = "[[${store.lat}]]";
+    let lng = "[[${store.lng}]]";
 
     var mapContainer = document.getElementById('map');
     var mapOption = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667), // 기본 중심 좌표
+      center: new kakao.maps.LatLng(lat, lng),
       level: 3
     };
 
     var map = new kakao.maps.Map(mapContainer, mapOption);
-    var geocoder = new kakao.maps.services.Geocoder();
 
-    geocoder.addressSearch(storeAddress, function(result, status) {
-      if (status === kakao.maps.services.Status.OK) {
-        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-        // 중심 좌표 이동
-        map.setCenter(coords);
-
-        // 마커 추가
-        var marker = new kakao.maps.Marker({
-          map: map,
-          position: coords
-        });
-      } else {
-        console.error('주소로 좌표 검색 실패:', storeAddress);
-      }
+    var marker = new kakao.maps.Marker({
+      map: map,
+      position: new kakao.maps.LatLng(lat, lng)
     });
   </script>
 </body>
