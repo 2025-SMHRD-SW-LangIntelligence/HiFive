@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title th:text="${store.shopName} + ' - 상세 정보'">술집 상세 정보</title>
   <link rel="stylesheet" th:href="@{/css/detail.css}" />
+  <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=여기에_본인_JavaScript_키&libraries=services"></script>
 </head>
 <body>
   <header>
@@ -12,7 +13,6 @@
     <h1>술집 상세</h1>
   </header>
 
-  <!-- ✅ 전체 내용을 wrapper로 감싸서 너비 제한 -->
   <div class="wrapper">
     <div class="detail" id="store-detail">
       <div class="like-btn" th:if="${session.loginUser != null}">
@@ -27,17 +27,21 @@
       </div>
 
       <h2 th:text="${store.shopName}">가게 이름</h2>
-      <p><strong>위치:</strong> <span th:text="${store.address}"></span></p>
+      <p><strong>위치:</strong> <span th:text="${store.address}">가게 주소</span></p>
     </div>
 
-    <hr>
+    <!-- ✅ 지도 표시 -->
+    <div id="map" style="width: 100%; height: 300px; margin: 20px 0; border-radius: 12px;"></div>
 
+    <hr />
+
+    <!-- ✅ 리뷰 목록 -->
     <div class="review-section">
       <h3>리뷰 목록</h3>
       <div th:if="${!#lists.isEmpty(reviews)}">
         <div class="review-item" th:each="review : ${reviews}">
-          <p><strong>작성자:</strong> <span th:text="${review.member.nickname}"></span></p>
-          <p th:text="${review.content}"></p>
+          <p><strong>작성자:</strong> <span th:text="${review.member.nickname}">닉네임</span></p>
+          <p th:text="${review.content}">리뷰 내용</p>
 
           <div th:if="${session.loginUser != null and session.loginUser.email == review.member.email}">
             <a th:href="@{/reviews/edit/{id}(id=${review.review_id})}">수정</a>
@@ -54,8 +58,9 @@
       </div>
     </div>
 
-    <hr>
+    <hr />
 
+    <!-- ✅ 리뷰 작성 -->
     <div class="review-form-section">
       <h3>리뷰 남기기</h3>
       <div th:if="${session.loginUser != null}">
@@ -70,5 +75,30 @@
       </div>
     </div>
   </div>
+
+  <!-- ✅ 지도 스크립트 -->
+  <script th:inline="javascript">
+    const address = /*[[${store.address}]]*/ "광주광역시 북구 용봉동";
+
+    kakao.maps.load(() => {
+      const mapContainer = document.getElementById('map');
+      const mapOption = {
+        center: new kakao.maps.LatLng(35.1595454, 126.8526012), // 기본 위치
+        level: 3
+      };
+      const map = new kakao.maps.Map(mapContainer, mapOption);
+      const geocoder = new kakao.maps.services.Geocoder();
+
+      geocoder.addressSearch(address, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          const marker = new kakao.maps.Marker({ map: map, position: coords });
+          map.setCenter(coords);
+        } else {
+          console.warn("주소로 좌표를 찾을 수 없습니다.");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
