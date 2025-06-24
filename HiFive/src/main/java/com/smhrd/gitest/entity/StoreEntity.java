@@ -47,7 +47,14 @@ public class StoreEntity {
 	    @Column(name = "lng")
 	    private Double lng; // 경도
 	    
-	    // store_name, store_location, store_owner 필드는 이 클래스에서 완전히 삭제합니다.
+	    // ▼▼▼▼▼ 이 부분을 추가하거나, 기존 주소 필드 이름을 변경하세요. ▼▼▼▼▼
+	    @Column(name = "legal_dong") // DB에 있는 실제 법정동 컬럼 이름
+	    private String legalDong;    // JPA가 찾고 있던 바로 그 필드!
+	    // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+	   
+	    
+	   
 	
 	}
 
