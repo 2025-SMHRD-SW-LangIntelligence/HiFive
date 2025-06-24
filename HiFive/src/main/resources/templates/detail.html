@@ -81,7 +81,7 @@
 
   <!-- ✅ 지도 표시 스크립트 -->
   <script th:inline="javascript">
-    let storeAddress = /*[[${store.address}]]*/ '';
+    let storeAddress = "${store_id}";
 
     var mapContainer = document.getElementById('map');
     var mapOption = {
