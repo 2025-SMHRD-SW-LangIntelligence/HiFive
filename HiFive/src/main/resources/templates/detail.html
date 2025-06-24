@@ -1,86 +1,103 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title th:text="${store.shopName} + ' - 상세 정보'">술집 상세 정보</title>
-  <link rel="stylesheet" th:href="@{/css/detail.css}" />
-  <!-- ✅ 카카오 지도 API -->
-  <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ed91b1f305426524a89bc89d59643b41&libraries=services"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title th:text="${store.shopName} + ' - 상세 정보'">술집 상세 정보</title>
+<link rel="stylesheet" th:href="@{/css/detail.css}" />
+<!-- ✅ 카카오 지도 API -->
+<script
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ed91b1f305426524a89bc89d59643b41&libraries=services"></script>
 </head>
 <body>
-  <header>
-    <div class="back-btn" onclick="history.back()">←</div>
-    <h1>술집 상세</h1>
-  </header>
+	<header>
+		<div class="back-btn" onclick="history.back()">←</div>
+		<h1>술집 상세</h1>
+	</header>
 
-  <div class="wrapper">
-    <div class="detail" id="store-detail">
-      <div class="like-btn" th:if="${session.loginUser != null}">
-        <form th:action="@{/wishlist/add}" method="post" th:if="${!store.wishlisted}">
-          <input type="hidden" name="storeId" th:value="${store.storeId}" />
-          <button type="submit">♡ 찜하기</button>
-        </form>
-        <form th:action="@{/wishlist/remove}" method="post" th:if="${store.wishlisted}">
-          <input type="hidden" name="storeId" th:value="${store.storeId}" />
-          <button type="submit">♥ 찜취소</button>
-        </form>
-      </div>
+	<div class="wrapper">
+		<div class="detail" id="store-detail">
+			<div class="like-btn" th:if="${session.loginUser != null}">
+				<form th:action="@{/wishlist/add}" method="post"
+					th:if="${!store.wishlisted}">
+					<input type="hidden" name="storeId" th:value="${store.storeId}" />
+					<button type="submit">♡ 찜하기</button>
+				</form>
+				<form th:action="@{/wishlist/remove}" method="post"
+					th:if="${store.wishlisted}">
+					<input type="hidden" name="storeId" th:value="${store.storeId}" />
+					<button type="submit">♥ 찜취소</button>
+				</form>
+			</div>
 
-      <h2 th:text="${store.shopName}">가게 이름</h2>
-      <p><strong>주소 :</strong> <span th:text="${store.cleanAddress}"></span></p>
-    </div>
+			<h2 th:text="${store.shopName}">가게 이름</h2>
+			<p>
+				<strong>주소 :</strong> <span th:text="${store.cleanAddress}"></span>
+			</p>
+		</div>
 
-    <!-- ✅ 지도 영역 -->
-    <div class="map-section">
-      <h3>위치 지도</h3>
-      <div id="map" style="width:100%; height:350px;"></div>
-    </div>
+		<!-- ✅ 지도 영역 -->
+		<div class="map-section">
+			<h3>위치 지도</h3>
+			<div id="map" style="width: 100%; height: 350px;"></div>
+		</div>
 
-    <hr>
+		<hr>
 
-    <div class="review-section">
-      <h3>리뷰 목록</h3>
-      <div th:if="${!#lists.isEmpty(reviews)}">
-        <div class="review-item" th:each="review : ${reviews}">
-          <p><strong>작성자:</strong> <span th:text="${review.member.nickname}"></span></p>
-          <p th:text="${review.content}"></p>
+		<div class="review-section">
+			<h3>리뷰 목록</h3>
+			<div th:if="${!#lists.isEmpty(reviews)}">
+				<div class="review-item" th:each="review : ${reviews}">
+					<p>
+						<strong>작성자:</strong> <span th:text="${review.member.nickname}"></span>
+					</p>
+					<p th:text="${review.content}"></p>
 
-          <div th:if="${session.loginUser != null and session.loginUser.email == review.member.email}">
-            <a th:href="@{/reviews/edit/{id}(id=${review.review_id})}">수정</a>
-            <form th:action="@{/reviews/delete}" method="post" style="display: inline;" onsubmit="return confirm('정말 이 리뷰를 삭제하시겠습니까?');">
-              <input type="hidden" name="reviewId" th:value="${review.review_id}" />
-              <input type="hidden" name="storeId" th:value="${review.store.storeId}" />
-              <button type="submit">삭제</button>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div th:if="${#lists.isEmpty(reviews)}">
-        <p>아직 작성된 리뷰가 없습니다.</p>
-      </div>
-    </div>
+					<div
+						th:if="${session.loginUser != null and session.loginUser.email == review.member.email}">
+						<a th:href="@{/reviews/edit/{id}(id=${review.review_id})}">수정</a>
+						<form th:action="@{/reviews/delete}" method="post"
+							style="display: inline;"
+							onsubmit="return confirm('정말 이 리뷰를 삭제하시겠습니까?');">
+							<input type="hidden" name="reviewId"
+								th:value="${review.review_id}" /> <input type="hidden"
+								name="storeId" th:value="${review.store.storeId}" />
+							<button type="submit">삭제</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div th:if="${#lists.isEmpty(reviews)}">
+				<p>아직 작성된 리뷰가 없습니다.</p>
+			</div>
+		</div>
 
-    <hr>
+		<hr>
 
-    <div class="review-form-section">
-      <h3>리뷰 남기기</h3>
-      <div th:if="${session.loginUser != null}">
-        <form th:action="@{/reviews/add}" method="post">
-          <input type="hidden" name="storeId" th:value="${store.storeId}" />
-          <textarea name="content" rows="4" placeholder="리뷰를 남겨주세요." required></textarea>
-          <button type="submit">리뷰 등록</button>
-        </form>
-      </div>
-      <div th:if="${session.loginUser == null}">
-        <p><a th:href="@{/login}">로그인</a> 후 리뷰를 작성할 수 있습니다.</p>
-      </div>
-    </div>
-  </div>
+		<div class="review-form-section">
+			<h3>리뷰 남기기</h3>
+			<div th:if="${session.loginUser != null}">
+				<form th:action="@{/reviews/add}" method="post">
+					<input type="hidden" name="storeId" th:value="${store.storeId}" />
+					<textarea name="content" rows="4" placeholder="리뷰를 남겨주세요." required></textarea>
+					<button type="submit">리뷰 등록</button>
+				</form>
+			</div>
+			<div th:if="${session.loginUser == null}">
+				<p>
+					<a th:href="@{/login}">로그인</a> 후 리뷰를 작성할 수 있습니다.
+				</p>
+			</div>
+		</div>
+	</div>
 
-  <!-- ✅ 지도 표시 스크립트 (주소 기반) -->
-  <script th:inline="javascript">
-    let storeAddress = [[|${store.cleanAddress}|]];
+	<!-- ✅ 지도 표시 스크립트 (주소 기반) -->
+	<script th:inline="javascript">
+  /*<![CDATA[*/
+	  // 1. Thymeleaf가 서버 값을 가져와서, 주석과 기본값을 '통째로' 대체합니다.
+    //    - IDE는 'let storeAddress = "기본 주소";' 로 인식하여 에러를 표시하지 않습니다.
+    //    - 서버는 실제 값으로 바꿔치기하여 'let storeAddress = "광주 동구 지산동 123";' 와 같은 코드를 생성합니다.
+    let storeAddress = /*[[|${store.cleanAddress}|]]*/"기본주소";
     console.log("주소 확인:", storeAddress);
 
     var mapContainer = document.getElementById('map');
@@ -100,6 +117,7 @@
           map: map,
           position: coords
         });
+    	/*]]>*/
 
         // ✅ 인포윈도우도 함께 띄우기 (선택)
         var infowindow = new kakao.maps.InfoWindow({
