@@ -19,5 +19,8 @@ public interface RecommendationRuleRepository extends JpaRepository<Recommendati
      */
     @Query("SELECT DISTINCT r.tagName FROM RecommendationRuleEntity r WHERE r.category IN :categories")
     List<String> findTagNamesByCategories(@Param("categories") List<String> categories);
+    
+ // ★★★ (핵심!) 카테고리 목록으로 모든 규칙을 통째로 가져오는, 더 강력한 메소드 추가 ★★★
+    List<RecommendationRuleEntity> findByCategoryIn(List<String> categories);
 
 }
