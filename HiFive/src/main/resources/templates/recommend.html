@@ -1,65 +1,78 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>한잔하주 추천 결과</title>
-  <link rel="stylesheet" th:href="@{/css/recommend.css}" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>한잔하주 추천 결과</title>
+<link rel="stylesheet" th:href="@{/css/recommend.css}" />
 </head>
 <body>
-  <header>
-    <div class="back-btn" onclick="goBack()">←</div>
-    <div class="header-title">추천 결과</div>
-    <div class="mypage-btn" onclick="goToMyPage()">My Page</div>
-  </header>
+	<header>
+		<div class="back-btn" onclick="goBack()">←</div>
+		<div class="header-title">추천 결과</div>
+		<div class="mypage-btn" onclick="goToMyPage()">My Page</div>
+	</header>
 
-  <div class="container">
-    <div class="result-header">
-      <p>
-        <span class="result-tags" th:text="|'#${#strings.listJoin(selectedTags, ' #')}'|">#감정태그</span>
-        에 대한 추천 결과입니다.
-      </p>
-    </div>
+	<div class="container">
+		<div class="result-header">
+			<p>
+				<span class="result-tags"
+					th:text="|'#${#strings.listJoin(selectedTags, ' #')}'|">#감정태그</span>
+				에 대한 추천 결과입니다.
+			</p>
+		</div>
 
-    <div class="row">
-      <div class="store-card" th:each="store : ${recommendedStores}">
-        <img th:if="${store.photoUrl != null}" th:src="${store.photoUrl}" alt="가게 사진" />
-        <img th:if="${store.photoUrl == null}" th:src="@{/images/default-store.png}" alt="기본 이미지" />
-        <div class="card-body">
-          <h5 class="store-title" th:text="${store.shopName}">가게 이름</h5>
-          <p class="store-info" th:text="${store.cleanAddress}">가게 주소</p>
-          <p class="store-info">
-            <strong>평점:</strong>
-            <span th:text="${store.rating != null ? store.rating : 'N/A'}" style="color: #f5a623;">0.0</span>
-          </p>
-          <div style="text-align: center;">
-            <a th:href="@{/store/{id}(id=${store.storeId})}" class="btn">상세 보기</a>
-          </div>
-        </div>
-      </div>
-    </div>
+		<div class="row">
+			<div class="store-card" th:each="store : ${recommendedStores}">
+				<img th:if="${store.photoUrl != null AND #strings.startsWith(store.photoUrl, 'http')}" th:src="${store.photoUrl}"
+					alt="가게 사진" /> <img th:if="${store.photoUrl == null OR !#strings.startsWith(store.photoUrl, 'http')}"
+					th:src="@{/images/default-store.png}" alt="기본 이미지" />
+				<div class="card-body">
+					<h5 class="store-title" th:text="${store.shopName}">가게 이름</h5>
+					<p class="store-info" th:text="${store.cleanAddress}">가게 주소</p>
+					<p class="store-info">
+						<strong>평점:</strong> <span
+							th:text="${store.rating != null ? store.rating : 'N/A'}"
+							style="color: #f5a623;">0.0</span>
+					</p>
+					<!-- ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ -->
+					<!-- ★★★ (핵심!) 매칭된 태그들을 여기에 표시하는 코드를 추가합니다. ★★★ -->
+					<!-- ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ -->
+					<div class="matched-tags"
+						th:if="${!#lists.isEmpty(store.matchedTags)}">
+						<!-- store.matchedTags 리스트를 반복하면서 각 태그를 span으로 보여줍니다. -->
+						<span class="tag" th:each="tag : ${store.matchedTags}"
+							th:text="|#${tag}|">#태그</span>
+					</div>
 
-    <div th:if="${#lists.isEmpty(recommendedStores)}" class="no-result">
-      아쉽게도, 해당 조건에 맞는 술집을 찾지 못했어요. 😢
-    </div>
-  </div>
+					<div style="text-align: center;">
+						<a th:href="@{/store/{id}(id=${store.storeId})}" class="btn">상세
+							보기</a>
+					</div>
+				</div>
+			</div>
+		</div>
 
-  <script th:inline="javascript">
-    function goBack() {
-      window.location.href = /*[[@{/main}]]*/ '/main';
-    }
+		<div th:if="${#lists.isEmpty(recommendedStores)}" class="no-result">
+			아쉽게도, 해당 조건에 맞는 술집을 찾지 못했어요. 😢</div>
+	</div>
 
-    function goToMyPage() {
-      /*<![CDATA[*/
-      const loginUser = /*[[${session.loginUser}]]*/ null;
-      /*]]>*/
-      if (loginUser) {
-        window.location.href = '/mypage';
-      } else {
-        alert('로그인이 필요한 서비스입니다.');
-        window.location.href = '/login';
-      }
-    }
-  </script>
+	<script th:inline="javascript">
+		function goBack() {
+			window.location.href = /*[[@{/main}]]*/'/main';
+		}
+
+		function goToMyPage() {
+			/*<![CDATA[*/
+			const loginUser = /*[[${session.loginUser}]]*/null;
+			/*]]>*/
+			if (loginUser) {
+				window.location.href = '/mypage';
+			} else {
+				alert('로그인이 필요한 서비스입니다.');
+				window.location.href = '/login';
+			}
+		}
+	</script>
 </body>
 </html>

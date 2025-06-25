@@ -2,10 +2,13 @@ package com.smhrd.gitest.service;
 
 import com.smhrd.gitest.dto.StoreResponseDto;
 import com.smhrd.gitest.entity.StoreEntity;
+import com.smhrd.gitest.repository.RecommendationRuleRepository; // ★★★ 새로 사용할 Repository import
 import com.smhrd.gitest.repository.StoreRepository;
+import com.smhrd.gitest.repository.StoreTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,28 +17,41 @@ import java.util.stream.Collectors;
 public class StoreSearchServiceImpl implements StoreSearchService {
 
     private final StoreRepository storeRepository;
+    private final StoreTagRepository storeTagRepository;
+    private final RecommendationRuleRepository recommendationRuleRepository; // ★★★ 새로 주입받는 전문가
 
     @Override
-    public List<StoreResponseDto> search(List<String> legalDongs, List<String> moodTags) {
+    public List<StoreResponseDto> search(List<String> legalDongs, List<String> userSelectedCategories) {
         
-        // 1. 파라미터로 받은 법정동 리스트(legalDongs)가 비어있는지 확인합니다.
-        // 만약 비어있다면, 검색할 동네가 없다는 뜻이므로 빈 리스트를 반환합니다.
         if (legalDongs == null || legalDongs.isEmpty()) {
-            return List.of(); // 빈 리스트 반환
+            return Collections.emptyList();
         }
 
-        // 2. (핵심!) storeRepository.findAll() 대신, 우리가 만든 findByLegalDongIn을 호출합니다.
-        // 이 메소드는 legalDongs 리스트에 포함된 법정동을 가진 가게만 정확히 찾아옵니다.
         List<StoreEntity> foundStores = storeRepository.findByLegalDongIn(legalDongs);
 
-        // TODO: 3. (다음 단계) 여기서 foundStores를 moodTags 기준으로 한 번 더 필터링하거나,
-        // 추천 점수 순으로 정렬하는 로직이 추가되어야 합니다.
-        // 지금은 우선 위치 기반 검색만 완벽하게 만듭니다.
+        // ★★★ (핵심 로직 시작!) ★★★
+        // 1. 사용자가 선택한 '카테고리'에 해당하는 모든 '태그 이름'들을 DB에서 가져옵니다.
+        List<String> relevantTagNames = recommendationRuleRepository.findTagNamesByCategories(userSelectedCategories);
 
-        // 4. 검색된 StoreEntity 리스트를 프론트에 보여줄 StoreResponseDto 리스트로 변환합니다.
-        List<StoreResponseDto> response = foundStores.stream()
-                .map(StoreResponseDto::fromEntity) // 정적 팩토리 메소드 사용
-                .collect(Collectors.toList());
+        List<StoreResponseDto> response = foundStores.stream().map(store -> {
+            
+            // 2. 이 가게가 실제로 가진 모든 태그 이름을 가져옵니다.
+            List<String> storeActualTags = storeTagRepository.findTagNamesByStoreId(store.getStoreId());
+
+            // 3. 이제 '가게의 태그 이름'과, '카테고리에 속한 태그 이름'을 비교합니다.
+            List<String> matchedTags = storeActualTags.stream()
+                    .filter(tag -> relevantTagNames.contains(tag))
+                    .collect(Collectors.toList());
+            
+            return new StoreResponseDto(
+                store.getStoreId(),
+                store.getShopName(),
+                store.getCleanAddress(),
+                store.getPhotoUrl(),
+                store.getRating(),
+                matchedTags
+            );
+        }).collect(Collectors.toList());
 
         return response;
     }
