@@ -15,7 +15,7 @@ public class StoreDto {
     private Double lat;
     private Double lng;
     private Boolean wishlisted; // 찜 여부 필드는 그대로 유지
-
+    private Long wishlistId;
     // 필요한 경우 추가 필드 (예: 거리, 감정 태그 등)
 
  // Entity -> DTO 변환 메소드 (getter 이름도 camelCase로 변경)

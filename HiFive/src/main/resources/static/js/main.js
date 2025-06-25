@@ -62,3 +62,36 @@ districtCheckboxes.forEach((checkbox) => {
         }
     });
 });
+
+// --- 태그 선택 제한 로직 ---
+
+// isGuest 변수는 main.html에서 이미 선언되었다고 가정합니다.
+if (isGuest) {
+    // 1. 상황 태그 그룹에 대한 제한 로직
+    const situationTags = document.querySelectorAll('input[name="situationTags"]');
+    situationTags.forEach(checkbox => {
+        checkbox.addEventListener('click', (event) => {
+            // 이미 선택된 개수를 센다.
+            const checkedCount = document.querySelectorAll('input[name="situationTags"]:checked').length;
+            
+            // 1개를 초과하여 선택하려고 하면,
+            if (checkedCount > 1) {
+                alert('비회원은 상황 태그를 1개만 선택할 수 있습니다.');
+                event.target.checked = false; // 선택을 취소시킨다.
+            }
+        });
+    });
+
+    // 2. 감정 태그 그룹에 대한 제한 로직
+    const emotionTags = document.querySelectorAll('input[name="emotionTags"]');
+    emotionTags.forEach(checkbox => {
+        checkbox.addEventListener('click', (event) => {
+            const checkedCount = document.querySelectorAll('input[name="emotionTags"]:checked').length;
+            
+            if (checkedCount > 1) {
+                alert('비회원은 감정 태그를 1개만 선택할 수 있습니다.');
+                event.target.checked = false;
+            }
+        });
+    });
+}

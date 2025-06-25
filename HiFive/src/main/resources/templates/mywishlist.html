@@ -21,13 +21,12 @@
       <!-- th:each를 사용하여 찜한 가게 목록을 반복 출력 -->
       <div class="place" th:each="store : ${wishlistedStores}">
         <h5 th:text="${store.shopName}">가게 이름</h5>
-        <p th:text="${store.CleanAddress}">가게 위치</p>
+        <p th:text="${store.cleanAddress}">가게 위치</p>
         
         <!-- 찜 취소 버튼 -->
-        <form th:action="@{/wishlist/remove}" method="post" style="display: inline;">
-            <input type="hidden" name="storeId" th:value="${store.storeId}" />
-            <button type="submit">찜 취소</button>
-        </form>
+       <!--- JavaScript가 어떤 가게를 취소할지 알 수 있도록, 'data-store-id'에 가게 ID를 저장합니다.-->
+            <button class="cancel-wishlist-btn" th:data-store-id="${store.storeId}">찜 취소</button>
+        
         <!-- 상세 보기 링크 -->
         <a th:href="@{/store/{id}(id=${store.storeId})}">상세 보기</a>
       </div>
@@ -41,6 +40,8 @@
 
   <div class="loading" id="loading" style="display: none;">불러오는 중...</div>
 
-  
+  <!-- ★★★ (핵심!) 우리가 수정할 wishlist.js 파일을 여기서 불러옵니다. ★★★ -->
+  <!-- 'defer' 속성은 HTML 문서가 모두 로드된 후 스크립트를 실행하도록 하여 안정성을 높입니다. -->
+  <script th:src="@{/js/mywishlist.js}" defer></script>
 </body>
 </html>
