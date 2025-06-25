@@ -115,3 +115,19 @@
       margin-top: 40px;
       color: #888;
     }
+    
+    .matched-tags {
+  margin: 8px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.matched-tags .tag {
+  background-color: #e6f3d8;
+  color: #333;
+  font-size: 0.85rem;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+}
