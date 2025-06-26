@@ -65,6 +65,21 @@ public class StoreSearchServiceImpl implements StoreSearchService {
             if (userSelectedCategories.contains("특별한 기념일") && storeActualTags.contains("와인")) {
                 score += PRIORITY_SCORE_BONUS;
             }
+            if (userSelectedCategories.contains("데이트/썸") && storeActualTags.contains("데이트")) {
+                score += PRIORITY_SCORE_BONUS;
+            }
+            if (userSelectedCategories.contains("친구들과 모임") && storeActualTags.contains("친구")) {
+                score += PRIORITY_SCORE_BONUS;
+            }
+            if (userSelectedCategories.contains("이별했을 때") && storeActualTags.contains("혼술")) {
+                score += PRIORITY_SCORE_BONUS;
+            }
+            if (userSelectedCategories.contains("생일") && storeActualTags.contains("분위기")) {
+                score += PRIORITY_SCORE_BONUS;
+            }
+            if (userSelectedCategories.contains("슬픔") && storeActualTags.contains("혼술")) {
+                score += PRIORITY_SCORE_BONUS;
+            }
             // (필요 시 다른 보너스 규칙 추가)
             
             return new StoreWithScore(store, score);
