@@ -137,3 +137,16 @@ a:hover {
     font-size: 0.95rem;
   }
 }
+
+.heart-red {
+  background-color: white;
+  color: red;
+  border: 1px solid red;
+  font-weight: bold;
+}
+
+.heart-red:hover {
+  background-color: #ffe6e6;
+  color: darkred;
+  border-color: darkred;
+}
