@@ -4,44 +4,76 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>찜한 장소</title>
-  <!-- ★★★ CSS 경로를 @{...} 문법으로 수정 ★★★ -->
   <link rel="stylesheet" th:href="@{/css/mywishlist.css}" />
-  <!-- ★★★ 불필요한 wishlist.js 링크는 완전히 삭제했습니다. ★★★ -->
 </head>
 <body>
   <header>
-    <div class="back-btn" th:onclick="|location.href='@{/mypage}'|">←</div>
+    <div class="back-btn" onclick="goBack()">←</div>
     찜한 장소
   </header>
   <h1>내가 찜한 술집</h1>
 
   <div id="place-list">
-    <!-- 찜 목록이 비어있지 않은 경우 -->
     <div th:if="${!#lists.isEmpty(wishlistedStores)}">
       <!-- th:each를 사용하여 찜한 가게 목록을 반복 출력 -->
       <div class="place" th:each="store : ${wishlistedStores}">
         <h5 th:text="${store.shopName}">가게 이름</h5>
         <p th:text="${store.cleanAddress}">가게 위치</p>
         
-        <!-- 찜 취소 버튼 -->
-       <!--- JavaScript가 어떤 가게를 취소할지 알 수 있도록, 'data-store-id'에 가게 ID를 저장합니다.-->
-            <button class="cancel-wishlist-btn" th:data-store-id="${store.storeId}">찜 취소</button>
+        <!-- 찜 취소 버튼: class와 data-store-id는 그대로 둡니다. -->
+        <button class="cancel-wishlist-btn" th:data-store-id="${store.storeId}">찜 취소</button>
         
-        <!-- 상세 보기 링크 -->
         <a th:href="@{/store/{id}(id=${store.storeId})}">상세 보기</a>
       </div>
     </div>
-
-    <!-- 찜 목록이 비어있는 경우 -->
     <div th:if="${#lists.isEmpty(wishlistedStores)}">
       <p>아직 찜한 장소가 없습니다. 마음에 드는 술집을 찜해보세요!</p>
     </div>
   </div>
 
-  <div class="loading" id="loading" style="display: none;">불러오는 중...</div>
+  <!-- ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ -->
+  <!-- ★★★ (핵심!) JavaScript를 '이벤트 위임' 방식으로 수정합니다. ★★★ -->
+  <!-- ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ -->
+  <script>
+    // --- 뒤로가기 기능 (유용하므로 그대로 둡니다) ---
+    function goBack() {
+      window.location.href = "/mypage";
+    }
 
-  <!-- ★★★ (핵심!) 우리가 수정할 wishlist.js 파일을 여기서 불러옵니다. ★★★ -->
-  <!-- 'defer' 속성은 HTML 문서가 모두 로드된 후 스크립트를 실행하도록 하여 안정성을 높입니다. -->
-  <script th:src="@{/js/mywishlist.js}" defer></script>
+    // 1. (핵심!) 모든 버튼을 찾는 대신, 버튼들을 감싸는 '부모 요소'에 이벤트를 겁니다.
+    //    이벤트 위임을 위해, 'place-list' div를 사용합니다.
+    const placeListContainer = document.getElementById('place-list');
+
+    // 2. 'place-list' 컨테이너에 클릭 이벤트를 추가합니다.
+    if (placeListContainer) { // null 체크
+        placeListContainer.addEventListener('click', function(event) {
+            // 3. (핵심!) 클릭된 요소가 'cancel-wishlist-btn' 클래스를 가진 버튼인지 확인합니다.
+            if (event.target.classList.contains('cancel-wishlist-btn')) {
+                const button = event.target; // 클릭된 요소가 바로 그 버튼입니다.
+                const storeId = button.dataset.storeId; // data-store-id 가져오기
+                
+                if (!confirm('정말로 찜을 취소하시겠어요?')) {
+                    return;
+                }
+
+                fetch(`/api/wishlist/remove?storeId=${storeId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('찜이 취소되었습니다.');
+                        location.reload(); // 페이지 새로고침으로 실시간 반영
+                    } else {
+                        response.text().then(text => alert('찜 취소에 실패했습니다: ' + text));
+                    }
+                })
+                .catch(error => {
+                    console.error('네트워크 에러:', error);
+                    alert('찜 취소 중 문제가 발생했습니다.');
+                });
+            }
+        });
+    }
+  </script>
 </body>
 </html>
